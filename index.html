@@ -3,13 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fuel & Combustion 200 OBJ Questions</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
             font-family: 'Roboto', sans-serif;
-            margin: 20px;
+            margin: 10px;
+            padding: 0 10px;
             max-width: 900px;
             color: #333;
         }
@@ -17,6 +19,7 @@
         h1 {
             text-align: center;
             color: #1976d2;
+            font-size: 1.8em;
         }
 
         .question-container {
@@ -24,13 +27,13 @@
             border: 1px solid #e0e6ed;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
         }
 
         .question-container p {
-            font-size: 18px;
-            margin-bottom: 15px;
+            font-size: 1em;
+            margin-bottom: 10px;
         }
 
         .options label {
@@ -41,6 +44,7 @@
             display: block;
             cursor: pointer;
             transition: background 0.3s ease;
+            font-size: 0.95em;
         }
 
         .options label:hover {
@@ -50,17 +54,17 @@
         #feedback {
             font-weight: 700;
             margin: 10px 0;
-            font-size: 20px;
+            font-size: 1.1em;
         }
 
         #scoreboard {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 15px;
+            padding: 10px;
             border-top: 2px solid #1976d2;
             background: #fff;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
+            font-size: 0.9em;
         }
 
         button {
@@ -70,9 +74,14 @@
             color: #fff;
             padding: 10px 16px;
             margin: 10px 5px 0;
-            font-size: 16px;
+            font-size: 1em;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         button:hover {
@@ -107,7 +116,7 @@
 
     <script>
         // All 200 questions embedded as a JSON array
-             const allQuestions = [
+                const allQuestions = [
                     { "question": "1. What is a fuel?", "options": ["A substance that contains chemical energy", "A catalyst", "A refrigerant", "A solvent"], "correctIndex": 0 },
                     { "question": "2. According to the lecture, which element is the main constituent in most fuels?", "options": ["Oxygen", "Nitrogen", "Carbon", "Hydrogen"], "correctIndex": 2 },
                     { "question": "3. Which of the following is an example of a fuel mentioned in the lecture?", "options": ["Charcoal", "Natural Gas", "Diesel Fuel", "All of the above"], "correctIndex": 3 },
@@ -422,8 +431,6 @@
                 quizQuestions = allQuestions.slice();
                 currentIndex = 0;
                 correctCount = 0;
-                // Optionally clear wrongQuestions here if desired:
-                // wrongQuestions = [];
             }
             document.getElementById('modeBtn').textContent = quizMode === "all" ? "Retry Wrong Answers" : "Back to All Questions";
             updateScoreboard();
