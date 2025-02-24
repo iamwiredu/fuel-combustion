@@ -2,381 +2,912 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuel & Combustion 200 OBJ Questions</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
-            font-family: 'Roboto', sans-serif;
-            margin: 10px;
-            padding: 0 10px;
-            max-width: 900px;
-            color: #333;
-        }
-        
-        h1 {
-            text-align: center;
-            color: #1976d2;
-            font-size: 1.8em;
-        }
-        
-        .question-container {
-            background: #fff;
-            border: 1px solid #e0e6ed;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .options label {
-            background: #e1f5fe;
-            border-radius: 5px;
-            padding: 8px 12px;
-            margin: 5px 0;
-            display: block;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            font-size: 0.95em;
-        }
-        
-        .options label:hover {
-            background: #b3e5fc;
-        }
-        
-        button {
-            background-color: #1976d2;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            padding: 10px 16px;
-            margin: 10px 5px 0;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            width: 100%;
-            max-width: 300px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        button:hover {
-            background-color: #0d47a1;
-        }
-        
-        #modeBtn {
-            background-color: #388e3c;
-        }
-        
-        #modeBtn:hover {
-            background-color: #1b5e20;
-        }
-        
-        select {
-            width: 100%;
-            max-width: 300px;
-            padding: 10px;
-            margin: 10px auto;
-            display: block;
-            border: 1px solid #1976d2;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fuel &amp; Combustion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+      font-family: 'Roboto', sans-serif;
+      margin: 20px;
+      max-width: 900px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1976d2;
+    }
+
+    .question-container {
+      background: #fff;
+      border: 1px solid #e0e6ed;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .question-container p {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .options label {
+      background: #e1f5fe;
+      border-radius: 5px;
+      padding: 8px 12px;
+      margin: 5px 0;
+      display: block;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .options label:hover {
+      background: #b3e5fc;
+    }
+
+    #feedback {
+      font-weight: 700;
+      margin: 10px 0;
+      font-size: 20px;
+    }
+
+    #scoreboard {
+      margin-top: 20px;
+      padding: 15px;
+      border-top: 2px solid #1976d2;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #1976d2;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      padding: 10px 16px;
+      margin: 10px 5px 0;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0d47a1;
+    }
+
+    #modeBtn {
+      background-color: #388e3c;
+    }
+
+    #modeBtn:hover {
+      background-color: #1b5e20;
+    }
+
+    #jumpDiv {
+      margin-top: 10px;
+    }
+
+    #jumpDiv input {
+      width: 60px;
+      padding: 5px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  </style>
 </head>
 
 <body>
-    <h1>Fuel & Combustion 200 OBJ Questions</h1>
-    <select id="jumpToQuestion"></select>
-    <div id="quiz"></div>
-    <div id="feedback"></div>
-    <div>
-        <button id="submitBtn">Submit Answer</button>
-        <button id="nextBtn" style="display:none;">Next Question</button>
-        <button id="modeBtn">Retry Wrong Answers</button>
-    </div>
-    
-    <script>
-        const allQuestions = [
-                    { "question": "1. What is a fuel?", "options": ["A substance that contains chemical energy", "A catalyst", "A refrigerant", "A solvent"], "correctIndex": 0 },
-                    { "question": "2. According to the lecture, which element is the main constituent in most fuels?", "options": ["Oxygen", "Nitrogen", "Carbon", "Hydrogen"], "correctIndex": 2 },
-                    { "question": "3. Which of the following is an example of a fuel mentioned in the lecture?", "options": ["Charcoal", "Natural Gas", "Diesel Fuel", "All of the above"], "correctIndex": 3 },
-                    { "question": "4. What property does a good fuel possess?", "options": ["High ash content", "Low calorific value", "High calorific value", "High moisture content"], "correctIndex": 2 },
-                    { "question": "5. Which of the following is NOT a use of fuel as mentioned in the lecture?", "options": ["Heat generation", "Work generation", "Chemical transformations", "None of the above"], "correctIndex": 3 },
-                    { "question": "6. Fuels that occur naturally without processing are classified as:", "options": ["Primary fuels", "Secondary fuels", "Synthetic fuels", "Recycled fuels"], "correctIndex": 0 },
-                    { "question": "7. Fuels derived from primary fuels after chemical processing are known as:", "options": ["Primary fuels", "Secondary fuels", "Tertiary fuels", "Natural fuels"], "correctIndex": 1 },
-                    { "question": "8. Which type of fuel is predominantly used for domestic heating in many regions?", "options": ["Solid fuels", "Liquid fuels", "Gaseous fuels", "Nuclear fuels"], "correctIndex": 0 },
-                    { "question": "9. What is the typical calorific value range of air-dried wood as given in the lecture?", "options": ["3500-4500 kcal/kg", "5000-6000 kcal/kg", "2500-3000 kcal/kg", "7000-8000 kcal/kg"], "correctIndex": 0 },
-                    { "question": "10. In coal classification, which type is known for having the highest carbon content and lowest volatile matter?", "options": ["Lignite", "Bituminous", "Anthracite", "Peat"], "correctIndex": 2 },
-                    { "question": "11. Which coal type is described as soft, brown colored and has high moisture content?", "options": ["Anthracite", "Bituminous", "Lignite", "Peat"], "correctIndex": 2 },
-                    { "question": "12. Peat is considered the first stage in the coalification process. True or False?", "options": ["True", "False"], "correctIndex": 0 },
-                    { "question": "13. Which process involves the heating of coal at 500-700°C to produce a coke with 5-15% volatile matter?", "options": ["High-temperature carbonization", "Low-temperature carbonization", "Fractional distillation", "Cracking"], "correctIndex": 1 },
-                    { "question": "14. In high-temperature carbonization, the yield of coke is approximately:", "options": ["65-75%", "80-90%", "50-60%", "30-40%"], "correctIndex": 0 },
-                    { "question": "15. Which process is used to convert synthesis gas into synthetic crude oil?", "options": ["Bergius process", "Fischer–Tropsch process", "Fractional distillation", "Gasification"], "correctIndex": 1 },
-                    { "question": "16. The Fischer–Tropsch process converts syngas primarily into:", "options": ["Gasoline", "Synthetic crude oil", "Diesel", "LPG"], "correctIndex": 1 },
-                    { "question": "17. The Bergius process is used to produce:", "options": ["Synthetic petrol from coal", "Refined petroleum", "Natural gas", "Charcoal"], "correctIndex": 0 },
-                    { "question": "18. What is the primary oxidizer in combustion processes?", "options": ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"], "correctIndex": 1 },
-                    { "question": "19. The flash point of a fuel is defined as:", "options": ["The highest temperature at which it ignites", "The lowest temperature at which its vapors ignite", "The temperature at which it autoignites", "The boiling point of the fuel"], "correctIndex": 1 },
-                    { "question": "20. Autoignition temperature is:", "options": ["The temperature at which fuel is first ignited by a spark", "The lowest temperature at which fuel spontaneously ignites in air", "The maximum combustion temperature", "The flash point plus 100°C"], "correctIndex": 1 },
-                    { "question": "21. The difference between HCV and LCV is primarily due to:", "options": ["Ash content", "Moisture and latent heat of water vapor", "Volatile matter", "Combustion efficiency"], "correctIndex": 1 },
-                    { "question": "22. The octane number of a fuel measures its:", "options": ["Calorific value", "Resistance to knocking", "Viscosity", "Autoignition temperature"], "correctIndex": 1 },
-                    { "question": "23. In determining the octane number, which substance is assigned a value of 100?", "options": ["n-Heptane", "Isooctane", "Tetra-Ethyl Lead", "Methanol"], "correctIndex": 1 },
-                    { "question": "24. n-Heptane is assigned an octane number of:", "options": ["100", "0", "50", "75"], "correctIndex": 1 },
-                    { "question": "25. Which anti-knock agent was traditionally added to gasoline to improve its octane rating?", "options": ["MTBE", "Tetra-Ethyl Lead (TEL)", "Ethanol", "Water"], "correctIndex": 1 },
-                    { "question": "26. The process of removing water from natural gas in processing is called:", "options": ["Sweetening", "Dehydration", "Fractionation", "Desulfurization"], "correctIndex": 1 },
-                    { "question": "27. In natural gas processing, the removal of sulfur compounds is often referred to as:", "options": ["Dehydration", "Sweetening", "Cracking", "Fractionation"], "correctIndex": 1 },
-                    { "question": "28. LPG stands for:", "options": ["Liquefied Petroleum Gas", "Light Petroleum Gas", "Low-pressure Gas", "Liquefied Propane Gas"], "correctIndex": 0 },
-                    { "question": "29. The primary advantage of using gaseous fuels is:", "options": ["Ease of storage", "High ash content", "Ease of pipeline transportation", "Low energy content"], "correctIndex": 2 },
-                    { "question": "30. Which factor is NOT considered when selecting coal for combustion?", "options": ["Calorific value", "Moisture content", "Uniform particle size", "Color"], "correctIndex": 3 },
-                    { "question": "31. The term “stoichiometric air” refers to:", "options": ["The actual air used in combustion", "The minimum air required for complete combustion", "Excess air provided during combustion", "Air with added oxygen"], "correctIndex": 1 },
-                    { "question": "32. Complete combustion of a hydrocarbon produces:", "options": ["Carbon monoxide and soot", "Carbon dioxide and water", "Carbon dioxide and carbon monoxide", "Water and unburnt fuel"], "correctIndex": 1 },
-                    { "question": "33. Incomplete combustion results in the formation of:", "options": ["CO₂ and H₂O", "CO and soot", "Only H₂O", "Only CO₂"], "correctIndex": 1 },
-                    { "question": "34. The air-fuel ratio represents:", "options": ["The mass of fuel per mass of air", "The mass of air per mass of fuel", "The volume of fuel per volume of air", "The ratio of oxygen to fuel"], "correctIndex": 1 },
-                    { "question": "35. Excess air in a combustion process is:", "options": ["Air below the stoichiometric requirement", "Air above the stoichiometric requirement", "The same as stoichiometric air", "Air that is removed after combustion"], "correctIndex": 1 },
-                    { "question": "36. The equivalence ratio is defined as:", "options": ["Actual fuel–air ratio divided by stoichiometric fuel–air ratio", "Stoichiometric fuel–air ratio divided by actual fuel–air ratio", "Actual air–fuel ratio divided by theoretical air", "The ratio of oxygen to nitrogen in the air"], "correctIndex": 0 },
-                    { "question": "37. Which of the following factors increases the tendency of knocking in an engine?", "options": ["Branched-chain hydrocarbons", "Straight-chain hydrocarbons", "Aromatic hydrocarbons", "Oxygenates"], "correctIndex": 1 },
-                    { "question": "38. The use of ethanol in gasoline helps to:", "options": ["Increase knocking", "Improve anti-knock properties", "Decrease combustion efficiency", "Increase moisture content"], "correctIndex": 1 },
-                    { "question": "39. The term “adiabatic flame temperature” refers to:", "options": ["The temperature after combustion with heat loss", "The theoretical temperature with no heat loss", "The flash point of the fuel", "The autoignition temperature"], "correctIndex": 1 },
-                    { "question": "40. Which of the following is a key advantage of liquid fuels?", "options": ["Easy to store without specialized equipment", "Low cost compared to solid fuels", "High calorific value per unit mass", "No risk of fire"], "correctIndex": 2 },
-                    { "question": "41. Fractional distillation is primarily used in the:", "options": ["Refining of petroleum", "Gasification of coal", "Carbonization process", "Production of LPG"], "correctIndex": 0 },
-                    { "question": "42. In the fractional distillation of crude oil, fractions are separated based on:", "options": ["Density", "Boiling point", "Viscosity", "Calorific value"], "correctIndex": 1 },
-                    { "question": "43. The removal of solid impurities from crude oil is typically done by:", "options": ["Centrifugation", "Distillation", "Cracking", "Reforming"], "correctIndex": 0 },
-                    { "question": "44. The Cottrell process is used for:", "options": ["Desalting crude oil", "Removal of water from crude oil", "Cracking of heavy oil", "Removal of sulfur compounds"], "correctIndex": 1 },
-                    { "question": "45. In coal, a higher percentage of ash content results in:", "options": ["Higher heating value", "Lower heating value", "Higher calorific value", "Improved combustion efficiency"], "correctIndex": 1 },
-                    { "question": "46. The calorific value of a fuel is defined as:", "options": ["The amount of heat released per unit mass of fuel", "The temperature at which fuel burns", "The amount of oxygen required for combustion", "The volume of fuel required for combustion"], "correctIndex": 0 },
-                    { "question": "47. Which calorimeter is used to measure the calorific value of solid fuels?", "options": ["Boy's Gas Calorimeter", "Bomb Calorimeter", "Joule Calorimeter", "Adiabatic Calorimeter"], "correctIndex": 1 },
-                    { "question": "48. In a bomb calorimeter, the fuel is burned in a sealed container known as the:", "options": ["Calorimeter chamber", "Bomb", "Reactor", "Combustion tube"], "correctIndex": 1 },
-                    { "question": "49. The water equivalent of a calorimeter is determined by burning a substance with known:", "options": ["Calorific value", "Flash point", "Density", "Viscosity"], "correctIndex": 0 },
-                    { "question": "50. The difference between the HCV and LCV is primarily due to:", "options": ["The water formed during combustion", "Ash content", "Combustion efficiency", "Fuel viscosity"], "correctIndex": 0 },
-                    { "question": "51. What is the typical role of a catalyst in the Fischer–Tropsch process?", "options": ["To increase the temperature of combustion", "To facilitate the conversion of syngas to liquid fuels", "To remove impurities from crude oil", "To increase the octane number of gasoline"], "correctIndex": 1 },
-                    { "question": "52. In the FT process, the primary feedstock is:", "options": ["Crude oil", "Synthesis gas", "Coal", "Natural gas"], "correctIndex": 1 },
-                    { "question": "53. Which of the following is a by-product of low-temperature carbonization of coal?", "options": ["High-strength coke", "Volatile-rich coke", "Coke with 5-15% volatile matter", "Coke with 1-3% volatile matter"], "correctIndex": 2 },
-                    { "question": "54. During high-temperature carbonization, nearly all volatile matter is:", "options": ["Retained in coke", "Driven off", "Converted to tar", "Absorbed by water"], "correctIndex": 1 },
-                    { "question": "55. Which property of fuel determines its ease of ignition?", "options": ["Calorific value", "Flash point", "Density", "Viscosity"], "correctIndex": 1 },
-                    { "question": "56. In the context of combustion, “knocking” refers to:", "options": ["Smooth engine operation", "Premature ignition of the fuel-air mixture", "Efficient combustion", "Delayed ignition"], "correctIndex": 1 },
-                    { "question": "57. The addition of anti-knock agents primarily helps to:", "options": ["Increase fuel density", "Reduce engine knocking", "Increase moisture content", "Lower the flash point"], "correctIndex": 1 },
-                    { "question": "58. The anti-knock agent MTBE stands for:", "options": ["Methyl Tertiary Butyl Ether", "Methyl Tetra Butyl Ether", "Mono Tertiary Butyl Ether", "Methane Tertiary Butyl Ether"], "correctIndex": 0 },
-                    { "question": "59. The process of doping in gasoline involves:", "options": ["Adding oxygen", "Adding anti-knock agents", "Increasing water content", "Removing impurities"], "correctIndex": 1 },
-                    { "question": "60. Which fuel property is measured in kcal/kg?", "options": ["Calorific value", "Density", "Viscosity", "Flash point"], "correctIndex": 0 },
-                    { "question": "61. The term “coking coal” refers to coals that:", "options": ["Are non-caking", "Become soft and plastic on heating", "Have high moisture content", "Contain high levels of sulfur"], "correctIndex": 1 },
-                    { "question": "62. Which of the following is a disadvantage of solid fuels?", "options": ["Easy storage", "Low ash content", "High ash content and clinker formation", "Low cost of handling"], "correctIndex": 2 },
-                    { "question": "63. The higher calorific value (HCV) includes:", "options": ["Heat released minus water loss", "Latent heat of water vapor", "Only the sensible heat", "None of the above"], "correctIndex": 1 },
-                    { "question": "64. The lower calorific value (LCV) is always:", "options": ["Higher than HCV", "Equal to HCV", "Lower than HCV", "Unrelated to HCV"], "correctIndex": 2 },
-                    { "question": "65. In the lecture, the combustion process is described as:", "options": ["An endothermic reaction", "An exothermic reaction", "A reversible reaction", "A neutral reaction"], "correctIndex": 1 },
-                    { "question": "66. Complete combustion requires a fuel to react with:", "options": ["Nitrogen", "Carbon dioxide", "Oxygen", "Hydrogen"], "correctIndex": 2 },
-                    { "question": "67. Incomplete combustion can produce:", "options": ["Only CO₂", "Only H₂O", "CO and soot", "Pure oxygen"], "correctIndex": 2 },
-                    { "question": "68. The term “excess air” in combustion is used to ensure:", "options": ["Incomplete combustion", "Complete combustion", "Lower flame temperature", "Reduced oxygen availability"], "correctIndex": 1 },
-                    { "question": "69. Autoignition temperature is the minimum temperature required for a hydrocarbon to spontaneously ignite without an external source.", "options": ["True", "False"], "correctIndex": 0 },
-                    { "question": "70. The bubble tower in a fractional distillation unit is used to:", "options": ["Cool the vapors", "Mix the crude oil", "Heat the crude oil", "Separate water from oil"], "correctIndex": 0 },
-                    { "question": "71. In the refining process, after fractional distillation, the collected fractions are:", "options": ["Directly marketed", "Further treated to impart specific properties", "Mixed together", "Disposed of as waste"], "correctIndex": 1 },
-                    { "question": "72. Which of the following is NOT a gaseous fuel?", "options": ["Natural Gas", "Producer Gas", "LPG", "Coal Gasoline"], "correctIndex": 3 },
-                    { "question": "73. Natural gas primarily consists of:", "options": ["Ethane", "Propane", "Methane", "Butane"], "correctIndex": 2 },
-                    { "question": "74. The calorific value of natural gas typically ranges between:", "options": ["8000-10000 kcal/m³", "12000-14000 kcal/m³", "15000-17000 kcal/m³", "5000-7000 kcal/m³"], "correctIndex": 1 },
-                    { "question": "75. In natural gas processing, dehydration is necessary to:", "options": ["Increase sulfur content", "Remove water vapor", "Add moisture", "Increase calorific value"], "correctIndex": 1 },
-                    { "question": "76. The primary goal of gas sweetening is to remove:", "options": ["Water", "Sulfur compounds", "Nitrogen", "Hydrocarbons"], "correctIndex": 1 },
-                    { "question": "77. LPG is stored under:", "options": ["High pressure", "Ambient pressure", "Vacuum conditions", "Low temperature without pressure"], "correctIndex": 0 },
-                    { "question": "78. The term “knocking” in an internal combustion engine is most directly associated with:", "options": ["Engine efficiency", "Fuel quality", "Premature fuel ignition", "Excessive air-fuel ratio"], "correctIndex": 2 },
-                    { "question": "79. The use of oxygenates in gasoline helps to:", "options": ["Increase knocking", "Improve combustion", "Lower octane number", "Increase sulfur content"], "correctIndex": 1 },
-                    { "question": "80. In the context of the lecture, “power alcohol” refers to:", "options": ["A mixture of diesel and ethanol", "A blend of ethanol and gasoline", "Pure ethanol", "A mixture of methanol and gasoline"], "correctIndex": 1 },
-                    { "question": "81. Which of the following is a benefit of using ethanol in fuel blends?", "options": ["Reduces carbon monoxide emissions", "Increases knocking", "Decreases combustion efficiency", "Increases fuel density"], "correctIndex": 0 },
-                    { "question": "82. The term “catalytic conversion” in the FT process refers to:", "options": ["Physical separation of components", "Chemical transformation using a catalyst", "Removal of impurities", "Thermal cracking"], "correctIndex": 1 },
-                    { "question": "83. In the FT process, operating temperature influences:", "options": ["Syncrude composition", "Volume of gas produced", "Color of the product", "Viscosity of fuel"], "correctIndex": 0 },
-                    { "question": "84. Which type of fuel has a higher energy density?", "options": ["Solid fuels", "Liquid fuels", "Gaseous fuels", "All have equal energy density"], "correctIndex": 1 },
-                    { "question": "85. The process of gas reforming is used to produce:", "options": ["Synthesis gas", "Crude oil", "LPG", "Coke"], "correctIndex": 0 },
-                    { "question": "86. A key disadvantage of using liquid fuels is:", "options": ["Easy storage", "High cost of special storage tanks", "Low calorific value", "Non-flammable nature"], "correctIndex": 1 },
-                    { "question": "87. The process of desulfurization in crude oil refining is important because:", "options": ["Sulfur improves fuel quality", "Sulfur compounds cause corrosion", "Sulfur increases calorific value", "Sulfur is a catalyst"], "correctIndex": 1 },
-                    { "question": "88. In the context of coal, a lower moisture content is desirable because:", "options": ["It increases calorific value", "It decreases handling cost", "It improves ash formation", "It increases volatile matter"], "correctIndex": 0 },
-                    { "question": "89. Which of the following best describes the term “volatile matter” in coal?", "options": ["Fixed carbon", "Water content", "Gaseous products released on heating", "Inorganic impurities"], "correctIndex": 2 },
-                    { "question": "90. The process of “doping” gasoline involves adding:", "options": ["Oxygen", "Anti-knock agents", "Water", "Sulfur compounds"], "correctIndex": 1 },
-                    { "question": "91. In a gas calorimeter, the primary purpose is to:", "options": ["Measure the calorific value of gaseous fuels", "Determine fuel viscosity", "Measure flash point", "Assess autoignition temperature"], "correctIndex": 0 },
-                    { "question": "92. The term “demethanizer” in natural gas processing is used to:", "options": ["Separate methane from other hydrocarbons", "Remove water", "Add nitrogen", "Increase oxygen content"], "correctIndex": 0 },
-                    { "question": "93. Which parameter is used to calculate the heating value in a bomb calorimeter?", "options": ["Mass of fuel", "Temperature rise of water", "Volume of oxygen", "Pressure in the bomb"], "correctIndex": 1 },
-                    { "question": "94. The phrase “adiabatic” in adiabatic flame temperature means:", "options": ["With heat loss", "Without heat exchange", "Under high pressure", "With added moisture"], "correctIndex": 1 },
-                    { "question": "95. In the lecture, the process of “sweetening” natural gas removes:", "options": ["Water vapor", "Sulfur compounds", "Carbon dioxide", "Hydrocarbons"], "correctIndex": 1 },
-                    { "question": "96. The primary reason for using excess air in combustion is to:", "options": ["Increase flame temperature", "Ensure complete combustion", "Reduce calorific value", "Increase moisture content"], "correctIndex": 1 },
-                    { "question": "97. The term “Orsat’s gas analyzer” is used to:", "options": ["Measure fuel viscosity", "Analyze combustion exhaust gases", "Determine flash point", "Calculate autoignition temperature"], "correctIndex": 1 },
-                    { "question": "98. Which process converts coal into coke with low volatile content?", "options": ["Low-temperature carbonization", "High-temperature carbonization", "Fractional distillation", "Cracking"], "correctIndex": 1 },
-                    { "question": "99. The by-product gas from low-temperature carbonization typically has a calorific value of:", "options": ["6500-9500 kcal/m³", "4000-5000 kcal/m³", "10000-12000 kcal/m³", "2000-3000 kcal/m³"], "correctIndex": 0 },
-                    { "question": "100. The main purpose of a cooling chamber in a fractional distillation unit is to:", "options": ["Heat the crude oil", "Condense vapors", "Separate water", "Mix different fractions"], "correctIndex": 1 },
-                    { "question": "101. Which fuel type is primarily derived from crude oil?", "options": ["Solid fuels", "Liquid fuels", "Gaseous fuels", "Nuclear fuels"], "correctIndex": 1 },
-                    { "question": "102. The process of refining petroleum involves:", "options": ["Only distillation", "Removal of impurities and fractionation", "Gasification", "Direct combustion"], "correctIndex": 1 },
-                    { "question": "103. What is the significance of the air-fuel ratio in combustion?", "options": ["Determines the color of the flame", "Controls combustion efficiency", "Affects fuel viscosity", "Increases autoignition temperature"], "correctIndex": 1 },
-                    { "question": "104. The term “volatile” in fuel properties refers to:", "options": ["Solid residue", "The ease with which a substance vaporizes", "The calorific value", "The ignition temperature"], "correctIndex": 1 },
-                    { "question": "105. In solid fuels, a high ash content is undesirable because:", "options": ["It increases the energy output", "It reduces the heating value", "It improves combustion", "It increases the moisture content"], "correctIndex": 1 },
-                    { "question": "106. The “combustion zone” in an engine refers to:", "options": ["Area where fuel is injected", "Area where combustion occurs", "Area where exhaust gases exit", "Area for fuel storage"], "correctIndex": 1 },
-                    { "question": "107. In the lecture, what is used as a measure of fuel quality?", "options": ["Flash point", "Calorific value", "Viscosity", "Color"], "correctIndex": 1 },
-                    { "question": "108. Which process is responsible for the formation of coke from coal?", "options": ["Refining", "Carbonization", "Distillation", "Gasification"], "correctIndex": 1 },
-                    { "question": "109. The term “iso” in isooctane signifies:", "options": ["Straight-chain", "Branched-chain", "Cyclic", "Aromatic"], "correctIndex": 1 },
-                    { "question": "110. In the context of the lecture, the combustion of a fuel in an insulated chamber is called:", "options": ["Adiabatic combustion", "Isothermal combustion", "Exothermic combustion", "Catalytic combustion"], "correctIndex": 0 },
-                    { "question": "111. Which factor does NOT affect the combustion process?", "options": ["Fuel-air mixing", "Fuel composition", "Ambient temperature", "Fuel color"], "correctIndex": 3 },
-                    { "question": "112. The process of cracking in petroleum refining is used to:", "options": ["Increase molecular weight", "Break down large molecules", "Remove impurities", "Enhance viscosity"], "correctIndex": 1 },
-                    { "question": "113. Which of the following is a disadvantage of liquid fuels?", "options": ["Ease of transportation", "Storage challenges", "High energy density", "Clean burning"], "correctIndex": 1 },
-                    { "question": "114. The removal of nitrogen compounds is typically not a primary focus in:", "options": ["Crude oil refining", "Natural gas processing", "Coal carbonization", "Fischer–Tropsch process"], "correctIndex": 2 },
-                    { "question": "115. The measurement of temperature change in a calorimeter helps determine the:", "options": ["Viscosity", "Calorific value", "Density", "Flash point"], "correctIndex": 1 },
-                    { "question": "116. Which of the following is a characteristic of an ideal fuel?", "options": ["Low calorific value", "High moisture content", "High availability", "High ash content"], "correctIndex": 2 },
-                    { "question": "117. A fuel with a high autoignition temperature will:", "options": ["Ignite easily", "Require higher temperature for ignition", "Have a lower flash point", "Produce more soot"], "correctIndex": 1 },
-                    { "question": "118. The term “doping” in the context of fuel refers to:", "options": ["Adding water", "Adding anti-knock agents", "Removing volatile matter", "Increasing sulfur content"], "correctIndex": 1 },
-                    { "question": "119. Which of the following is a method used to determine the calorific value of a fuel?", "options": ["Bomb calorimetry", "Fractional distillation", "Gas chromatography", "Spectroscopy"], "correctIndex": 0 },
-                    { "question": "120. In a combustion process, if the air supplied is less than stoichiometric, the result is:", "options": ["Complete combustion", "Incomplete combustion", "No combustion", "Excessive combustion"], "correctIndex": 1 },
-                    { "question": "121. The term “ignition lag” refers to:", "options": ["The time between fuel injection and spark", "The delay between reaching ignition temperature and ignition", "The time taken to cool the engine", "The delay in fuel mixing"], "correctIndex": 1 },
-                    { "question": "122. The anti-knock property of a fuel increases with:", "options": ["Long straight chains", "Branched-chain hydrocarbons", "High sulfur content", "High moisture content"], "correctIndex": 1 },
-                    { "question": "123. A fuel’s viscosity affects its:", "options": ["Storage stability", "Combustion characteristics", "Color", "Moisture content"], "correctIndex": 1 },
-                    { "question": "124. Which fuel property is important for ensuring efficient mixing with air?", "options": ["Vapor pressure", "Viscosity", "Calorific value", "Ash content"], "correctIndex": 1 },
-                    { "question": "125. The latent heat of vaporization in a combustion process primarily affects:", "options": ["Higher calorific value", "Lower calorific value", "Fuel density", "Autoignition temperature"], "correctIndex": 1 },
-                    { "question": "126. The process of gasification converts solid fuel into:", "options": ["Liquid fuel", "Gaseous fuel", "Solid residue", "Ash"], "correctIndex": 1 },
-                    { "question": "127. In natural gas processing, NGL stands for:", "options": ["Natural Gas Liquids", "Non-Gaseous Lumps", "Natural Gas Levels", "Non-Liquid Gases"], "correctIndex": 0 },
-                    { "question": "128. The demethanizer in natural gas processing is used to separate:", "options": ["Ethane", "Methane", "Propane", "Butane"], "correctIndex": 1 },
-                    { "question": "129. The process of electric desalting in petroleum refining is used to remove:", "options": ["Water", "Sulfur compounds", "Salts like NaCl and MgCl₂", "Solid impurities"], "correctIndex": 2 },
-                    { "question": "130. Which of the following is an example of a secondary (artificial) fuel?", "options": ["Wood", "Coal", "Charcoal", "Peat"], "correctIndex": 2 },
-                    { "question": "131. The term “fire point” is defined as:", "options": ["The temperature at which fuel vapors ignite", "The temperature at which the fuel continues to burn after ignition", "The autoignition temperature", "The flash point plus 50°C"], "correctIndex": 1 },
-                    { "question": "132. The boiling point of water plays a role in:", "options": ["Determining HCV", "Determining LCV", "Measuring viscosity", "Assessing density"], "correctIndex": 1 },
-                    { "question": "133. The chemical composition of crude oil is primarily:", "options": ["Pure hydrocarbons", "A mixture of hydrocarbons with sulfur, nitrogen, and oxygen", "Only aromatic compounds", "Only paraffinic compounds"], "correctIndex": 1 },
-                    { "question": "134. Which process in refining involves heating crude oil to about 400°C?", "options": ["Fractional distillation", "Cracking", "Reforming", "Carbonization"], "correctIndex": 0 },
-                    { "question": "135. In a combustion reaction, the law of conservation of mass states that:", "options": ["Mass is lost", "Mass is gained", "Mass remains constant", "Mass doubles"], "correctIndex": 2 },
-                    { "question": "136. The higher the compression ratio in an engine, the:", "options": ["Lower the efficiency", "Higher the efficiency", "Unchanged efficiency", "Lower the knocking tendency"], "correctIndex": 1 },
-                    { "question": "137. The term “steady-flow process” in combustion refers to:", "options": ["Intermittent fuel supply", "Constant fuel and air flow", "Cyclic combustion", "Variable combustion"], "correctIndex": 1 },
-                    { "question": "138. Which instrument is used to analyze the composition of combustion exhaust gases?", "options": ["Bomb calorimeter", "Orsat's gas analyzer", "Thermometer", "Barometer"], "correctIndex": 1 },
-                    { "question": "139. The reaction: C₃H₈ + 5O₂ → 3CO₂ + 4H₂O represents:", "options": ["Incomplete combustion", "Complete combustion", "Secondary combustion", "Autoignition"], "correctIndex": 1 },
-                    { "question": "140. In an internal combustion engine, a slight metallic knock at the highest useful compression ratio (HUCR) indicates:", "options": ["Optimal performance", "Engine failure", "Slight knocking", "Complete knocking"], "correctIndex": 2 },
-                    { "question": "141. The term “cetane number” is associated with:", "options": ["Gasoline", "Diesel fuel", "LPG", "Natural gas"], "correctIndex": 1 },
-                    { "question": "142. A higher cetane number indicates:", "options": ["Longer ignition delay", "Shorter ignition delay", "Higher knocking tendency", "Lower combustion efficiency"], "correctIndex": 1 },
-                    { "question": "143. The presence of which substance in crude oil can lead to scale formation in refining equipment?", "options": ["NaCl", "Oxygen", "Carbon", "Methane"], "correctIndex": 0 },
-                    { "question": "144. The ideal air-fuel ratio is important for:", "options": ["Maximizing unburned fuel", "Achieving complete combustion", "Increasing emissions", "Lowering flame temperature"], "correctIndex": 1 },
-                    { "question": "145. Which of the following is a method used to produce synthetic petrol?", "options": ["Fischer–Tropsch process", "Fractional distillation", "Desalting", "Electrolysis"], "correctIndex": 0 },
-                    { "question": "146. In the Bergius process, coal is:", "options": ["Mixed with water", "Converted directly to coke", "Made into a paste with heavy oil", "Refined like crude oil"], "correctIndex": 2 },
-                    { "question": "147. Which of the following is true regarding the combustion of hydrogen?", "options": ["It produces high levels of CO₂", "It burns with a high flame temperature", "It has a high autoignition temperature", "It produces soot"], "correctIndex": 1 },
-                    { "question": "148. The term “organoleptic” in fuel properties refers to:", "options": ["Taste and odor", "Calorific value", "Viscosity", "Density"], "correctIndex": 0 },
-                    { "question": "149. A low moisture content in fuel is desirable because:", "options": ["It decreases storage efficiency", "It increases the effective heating value", "It increases ash content", "It causes incomplete combustion"], "correctIndex": 1 },
-                    { "question": "150. Which of the following best describes “producer gas”?", "options": ["A mixture of CO, H₂, and N₂", "Pure methane", "Liquid fuel", "Solid carbon"], "correctIndex": 0 },
-                    { "question": "151. In the production of producer gas, air is mixed with:", "options": ["High steam", "A small amount of steam", "No steam", "Excess water"], "correctIndex": 1 },
-                    { "question": "152. The composition of producer gas typically includes:", "options": ["22-30% CO, 8-12% H₂, remainder N₂ and CO₂", "50% methane and 50% ethane", "Pure hydrogen", "Only nitrogen"], "correctIndex": 0 },
-                    { "question": "153. The term “gas reforming” refers to:", "options": ["Conversion of gas to liquid", "Production of synthesis gas from natural gas", "Removal of impurities", "Increasing sulfur content"], "correctIndex": 1 },
-                    { "question": "154. The efficiency of combustion can be loosely determined by the:", "options": ["Color of the flame", "Volume of fuel", "Amount of air used", "Temperature of the fuel"], "correctIndex": 0 },
-                    { "question": "155. In the context of the lecture, “latent heat” refers to:", "options": ["Heat released during condensation", "Heat absorbed during water vapor formation", "Sensible heat", "Heat of combustion"], "correctIndex": 1 },
-                    { "question": "156. The term “specific gravity” in fuel properties is another name for:", "options": ["Density", "Viscosity", "Calorific value", "Boiling point"], "correctIndex": 0 },
-                    { "question": "157. Which of the following factors can cause incomplete combustion?", "options": ["Excess oxygen", "Insufficient mixing", "High flame temperature", "Adequate air supply"], "correctIndex": 1 },
-                    { "question": "158. In a combustion reaction, the conservation of atoms means:", "options": ["The total mass of reactants equals products", "The number of atoms of each element remains constant", "Only oxygen atoms are conserved", "Hydrogen atoms are created"], "correctIndex": 1 },
-                    { "question": "159. A high-calorific fuel generally:", "options": ["Releases less heat per unit mass", "Releases more heat per unit mass", "Has a lower energy density", "Is unsuitable for combustion"], "correctIndex": 1 },
-                    { "question": "160. The process of “desalting” in crude oil processing removes:", "options": ["Water", "Salts", "Sulfur", "Organic compounds"], "correctIndex": 1 },
-                    { "question": "161. Which instrument is used to measure temperature changes in a calorimeter?", "options": ["Thermometer", "Barometer", "Manometer", "Spectrometer"], "correctIndex": 0 },
-                    { "question": "162. The term “bubble tower” in fractional distillation is used to:", "options": ["Introduce heat", "Provide condensation surfaces", "Mix the fractions", "Increase pressure"], "correctIndex": 1 },
-                    { "question": "163. Which of the following is a benefit of using localStorage in web applications?", "options": ["Reduced load time", "High cost", "Server-side storage", "Data loss on refresh"], "correctIndex": 0 },
-                    { "question": "164. The term “session storage” differs from localStorage in that:", "options": ["It persists across sessions", "It is cleared when the session ends", "It is stored on the server", "It requires payment"], "correctIndex": 1 },
-                    { "question": "165. The process of “fractionation” in natural gas processing is used to:", "options": ["Remove water", "Separate heavier hydrocarbons", "Crack methane", "Increase calorific value"], "correctIndex": 1 },
-                    { "question": "166. The term “combustion efficiency” refers to:", "options": ["The ratio of heat produced to fuel consumed", "The speed of combustion", "The volume of air used", "The color of the flame"], "correctIndex": 0 },
-                    { "question": "167. Which parameter is most directly affected by the compression ratio in an engine?", "options": ["Fuel quality", "Air-fuel ratio", "Ignition delay", "Calorific value"], "correctIndex": 2 },
-                    { "question": "168. The presence of unburned carbon in exhaust gases indicates:", "options": ["Complete combustion", "Incomplete combustion", "High combustion efficiency", "Excess oxygen"], "correctIndex": 1 },
-                    { "question": "169. In combustion, the term “exothermic” means:", "options": ["Heat is absorbed", "Heat is released", "No heat change", "Only light is produced"], "correctIndex": 1 },
-                    { "question": "170. The use of a timer in a gas calorimeter helps to:", "options": ["Control fuel flow", "Measure the rate of gas consumption", "Adjust the pressure", "Regulate water temperature"], "correctIndex": 1 },
-                    { "question": "171. The term “liquefied” in LPG indicates that the gas is stored:", "options": ["At low temperature", "Under high pressure", "Both low temperature and high pressure", "At ambient conditions"], "correctIndex": 2 },
-                    { "question": "172. Which property of a fuel directly affects its transportation efficiency?", "options": ["Calorific value", "Energy density", "Flash point", "Viscosity"], "correctIndex": 1 },
-                    { "question": "173. The measurement of “heating value” is essential for:", "options": ["Determining fuel cost efficiency", "Measuring viscosity", "Assessing color", "Determining water content"], "correctIndex": 0 },
-                    { "question": "174. A fuel with low ash content is preferred because:", "options": ["It produces more heat", "It reduces non-combustible residue", "It increases moisture", "It enhances flavor"], "correctIndex": 1 },
-                    { "question": "175. In the refining of petroleum, the initial removal of water is achieved by:", "options": ["Centrifugation", "Electric desalting", "Fractional distillation", "Cracking"], "correctIndex": 1 },
-                    { "question": "176. The term “thermal stage” in the Claus process refers to:", "options": ["The catalytic stage", "The initial oxidation of H₂S", "The final recovery of sulfur", "The removal of water"], "correctIndex": 1 },
-                    { "question": "177. Which reaction is the overall reaction in the Claus process?", "options": ["3H₂S + 1.5O₂ → 3/nSn + 3H₂O", "2H₂S + SO₂ → (3/8)S₈ + 2H₂O", "C₃H₈ + 5O₂ → 3CO₂ + 4H₂O", "None of the above"], "correctIndex": 0 },
-                    { "question": "178. The term “coke” in coal processing refers to:", "options": ["A by-product of carbonization", "Unburnt coal", "Crude oil residue", "Synthetic fuel"], "correctIndex": 0 },
-                    { "question": "179. The process of “pre-heating” crude oil in fractional distillation is done to:", "options": ["Lower its viscosity", "Vaporize the oil", "Remove impurities", "Separate water"], "correctIndex": 1 },
-                    { "question": "180. The combustion process in an internal combustion engine is initiated by:", "options": ["Spontaneous ignition", "A spark plug", "Compression alone", "Fuel injection"], "correctIndex": 1 },
-                    { "question": "181. In the context of combustion, “flammability limits” refer to:", "options": ["The range of fuel concentrations that will burn", "The maximum flame temperature", "The minimum autoignition temperature", "The flash point"], "correctIndex": 0 },
-                    { "question": "182. Which of the following factors does NOT affect the octane number of a fuel?", "options": ["Hydrocarbon structure", "Presence of anti-knock agents", "Moisture content", "Number of carbon atoms"], "correctIndex": 2 },
-                    { "question": "183. The process of “reforming” in petroleum processing is used to:", "options": ["Convert straight-run hydrocarbons into high-octane products", "Remove sulfur", "Separate crude oil fractions", "Increase water content"], "correctIndex": 0 },
-                    { "question": "184. Which fuel is known for its high energy density and ease of transport via pipelines?", "options": ["Solid fuels", "Liquid fuels", "Gaseous fuels", "Nuclear fuels"], "correctIndex": 2 },
-                    { "question": "185. The term “volatile” in the context of coal refers to:", "options": ["Fixed carbon", "Moisture", "Components that vaporize on heating", "Ash content"], "correctIndex": 2 },
-                    { "question": "186. The proper mixing of fuel and air is crucial for:", "options": ["Complete combustion", "Incomplete combustion", "Lower flame temperature", "Higher viscosity"], "correctIndex": 0 },
-                    { "question": "187. In a combustion process, the term “flame length” is an indicator of:", "options": ["Combustion efficiency", "Fuel viscosity", "Moisture content", "Calorific value"], "correctIndex": 0 },
-                    { "question": "188. The term “coking” in coal processing refers to:", "options": ["The formation of a soft, plastic mass", "The removal of ash", "The increase of volatile matter", "The separation of water"], "correctIndex": 0 },
-                    { "question": "189. The “calorific value” of a fuel is measured in:", "options": ["Joules per gram", "Calories per gram", "Both A and B", "Liters per kilogram"], "correctIndex": 2 },
-                    { "question": "190. Which of the following best describes “naphthalene” in the context of calorimetry?", "options": ["A fuel with low calorific value", "A substance used to calibrate a calorimeter", "A type of coal", "A catalyst in combustion"], "correctIndex": 1 },
-                    { "question": "191. The term “gas producer” refers to:", "options": ["A device for producing natural gas", "A reactor for producing producer gas from coal", "A type of gas storage tank", "A method of gas transportation"], "correctIndex": 1 },
-                    { "question": "192. In the lecture, what is indicated by a blue flame during combustion?", "options": ["Incomplete combustion", "Proper mixing of fuel and air", "Excess fuel", "High moisture content"], "correctIndex": 1 },
-                    { "question": "193. The measurement of “air-fuel ratio” is important for:", "options": ["Engine efficiency", "Fuel storage", "Calorific value determination", "Ash content measurement"], "correctIndex": 0 },
-                    { "question": "194. The term “synthesis gas” primarily consists of:", "options": ["CO and H₂", "CO₂ and H₂O", "CH₄ and N₂", "O₂ and N₂"], "correctIndex": 0 },
-                    { "question": "195. The process of “gasification” of coal converts it into:", "options": ["Liquid fuel", "Gaseous fuel", "Solid residue", "Coke"], "correctIndex": 1 },
-                    { "question": "196. A fuel with a high octane number is less likely to:", "options": ["Knock", "Ignite", "Release heat", "Store energy"], "correctIndex": 0 },
-                    { "question": "197. The presence of which component in a fuel can lead to environmental pollution when burned?", "options": ["Carbon", "Sulfur", "Hydrogen", "Oxygen"], "correctIndex": 1 },
-                    { "question": "198. The term “fuel density” refers to:", "options": ["Mass per unit volume of fuel", "Heat content per unit mass", "Volume of fuel per unit energy", "Vapor pressure of fuel"], "correctIndex": 0 },
-                    { "question": "199. Which factor is most critical in determining the storage requirements for liquid fuels?", "options": ["Calorific value", "Cost of storage tanks", "Volatility", "Viscosity"], "correctIndex": 2 },
-                    { "question": "200. The process of “cracking” in petroleum refining involves:", "options": ["Breaking large hydrocarbon molecules into smaller ones", "Combining small molecules into larger ones", "Removing impurities", "Increasing water content"], "correctIndex": 0 }
-                ];
-        let quizMode = "all";
-        let quizQuestions = allQuestions.slice();
-        let lastQuestionIndex = { all: 0, wrong: 0 };
-        let correctCount = 0;
-        let wrongQuestions = [];
+  <h1>Fuel &amp; Combustion</h1>
+  <div id="quiz"></div>
+  <div id="feedback"></div>
+  <div>
+    <button id="submitBtn">Submit Answer</button>
+    <button id="nextBtn" style="display:none;">Next Question</button>
+    <button id="modeBtn">Retry Wrong Answers</button>
+  </div>
+  <!-- Jump to Question Feature -->
+  <div id="jumpDiv">
+    <label for="jumpInput">Jump to Question:</label>
+    <input type="number" id="jumpInput" placeholder="e.g., 5" />
+    <button id="jumpBtn">Go</button>
+  </div>
+  <div id="scoreboard">
+    <p>
+      Question: <span id="currentIndexDisplay">1</span> /
+      <span id="totalQuestionsDisplay"></span>
+    </p>
+    <p>Correct: <span id="correctCountDisplay">0</span></p>
+    <p>Wrong: <span id="wrongCountDisplay">0</span></p>
+    <p>Mode: <span id="modeDisplay">All Questions</span></p>
+  </div>
+
+  <script>
+    // Combined questions from Lectures 1–4 and Tutorials 1 & 2.
+    // (You can further add more questions to fully cover every possible topic.)
+     const allQuestions = [
+        { "question": "1. What is a fuel?", "options": ["A substance that contains chemical energy", "A catalyst", "A refrigerant", "A solvent"], "correctIndex": 0 },
+        { "question": "2. According to the lecture, which element is the main constituent in most fuels?", "options": ["Oxygen", "Nitrogen", "Carbon", "Hydrogen"], "correctIndex": 2 },
+        { "question": "3. Which of the following is an example of a fuel mentioned in the lecture?", "options": ["Charcoal", "Natural Gas", "Diesel Fuel", "All of the above"], "correctIndex": 3 },
+        { "question": "4. What property does a good fuel possess?", "options": ["High ash content", "Low calorific value", "High calorific value", "High moisture content"], "correctIndex": 2 },
+        { "question": "5. Which of the following is NOT a use of fuel as mentioned in the lecture?", "options": ["Heat generation", "Work generation", "Chemical transformations", "None of the above"], "correctIndex": 3 },
+        { "question": "6. Fuels that occur naturally without processing are classified as:", "options": ["Primary fuels", "Secondary fuels", "Synthetic fuels", "Recycled fuels"], "correctIndex": 0 },
+        { "question": "7. Fuels derived from primary fuels after chemical processing are known as:", "options": ["Primary fuels", "Secondary fuels", "Tertiary fuels", "Natural fuels"], "correctIndex": 1 },
+        { "question": "8. Which type of fuel is predominantly used for domestic heating in many regions?", "options": ["Solid fuels", "Liquid fuels", "Gaseous fuels", "Nuclear fuels"], "correctIndex": 0 },
+        { "question": "9. What is the typical calorific value range of air-dried wood as given in the lecture?", "options": ["3500-4500 kcal/kg", "5000-6000 kcal/kg", "2500-3000 kcal/kg", "7000-8000 kcal/kg"], "correctIndex": 0 },
+        { "question": "10. In coal classification, which type is known for having the highest carbon content and lowest volatile matter?", "options": ["Lignite", "Bituminous", "Anthracite", "Peat"], "correctIndex": 2 },
+        { "question": "11. Which coal type is described as soft, brown colored and has high moisture content?", "options": ["Anthracite", "Bituminous", "Lignite", "Peat"], "correctIndex": 2 },
+        { "question": "12. Peat is considered the first stage in the coalification process. True or False?", "options": ["True", "False"], "correctIndex": 0 },
+        { "question": "13. Which process involves the heating of coal at 500-700°C to produce a coke with 5-15% volatile matter?", "options": ["High-temperature carbonization", "Low-temperature carbonization", "Fractional distillation", "Cracking"], "correctIndex": 1 },
+        { "question": "14. In high-temperature carbonization, the yield of coke is approximately:", "options": ["65-75%", "80-90%", "50-60%", "30-40%"], "correctIndex": 0 },
+        { "question": "15. Which process is used to convert synthesis gas into synthetic crude oil?", "options": ["Bergius process", "Fischer–Tropsch process", "Fractional distillation", "Gasification"], "correctIndex": 1 },
+        { "question": "16. The Fischer–Tropsch process converts syngas primarily into:", "options": ["Gasoline", "Synthetic crude oil", "Diesel", "LPG"], "correctIndex": 1 },
+        { "question": "17. The Bergius process is used to produce:", "options": ["Synthetic petrol from coal", "Refined petroleum", "Natural gas", "Charcoal"], "correctIndex": 0 },
+        { "question": "18. What is the primary oxidizer in combustion processes?", "options": ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"], "correctIndex": 1 },
+        { "question": "19. The flash point of a fuel is defined as:", "options": ["The highest temperature at which it ignites", "The lowest temperature at which its vapors ignite", "The temperature at which it autoignites", "The boiling point of the fuel"], "correctIndex": 1 },
+        { "question": "20. Autoignition temperature is:", "options": ["The temperature at which fuel is first ignited by a spark", "The lowest temperature at which fuel spontaneously ignites in air", "The maximum combustion temperature", "The flash point plus 100°C"], "correctIndex": 1 },
+        { "question": "21. The difference between HCV and LCV is primarily due to:", "options": ["Ash content", "Moisture and latent heat of water vapor", "Volatile matter", "Combustion efficiency"], "correctIndex": 1 },
+        { "question": "22. The octane number of a fuel measures its:", "options": ["Calorific value", "Resistance to knocking", "Viscosity", "Autoignition temperature"], "correctIndex": 1 },
+        { "question": "23. In determining the octane number, which substance is assigned a value of 100?", "options": ["n-Heptane", "Isooctane", "Tetra-Ethyl Lead", "Methanol"], "correctIndex": 1 },
+        { "question": "24. n-Heptane is assigned an octane number of:", "options": ["100", "0", "50", "75"], "correctIndex": 1 },
+        { "question": "25. Which anti-knock agent was traditionally added to gasoline to improve its octane rating?", "options": ["MTBE", "Tetra-Ethyl Lead (TEL)", "Ethanol", "Water"], "correctIndex": 1 },
+        { "question": "26. The process of removing water from natural gas in processing is called:", "options": ["Sweetening", "Dehydration", "Fractionation", "Desulfurization"], "correctIndex": 1 },
+        { "question": "27. In natural gas processing, the removal of sulfur compounds is often referred to as:", "options": ["Dehydration", "Sweetening", "Cracking", "Fractionation"], "correctIndex": 1 },
+        { "question": "28. LPG stands for:", "options": ["Liquefied Petroleum Gas", "Light Petroleum Gas", "Low-pressure Gas", "Liquefied Propane Gas"], "correctIndex": 0 },
+        { "question": "29. The primary advantage of using gaseous fuels is:", "options": ["Ease of storage", "High ash content", "Ease of pipeline transportation", "Low energy content"], "correctIndex": 2 },
+        { "question": "30. Which factor is NOT considered when selecting coal for combustion?", "options": ["Calorific value", "Moisture content", "Uniform particle size", "Color"], "correctIndex": 3 },
+        { "question": "31. The term “stoichiometric air” refers to:", "options": ["The actual air used in combustion", "The minimum air required for complete combustion", "Excess air provided during combustion", "Air with added oxygen"], "correctIndex": 1 },
+        { "question": "32. Complete combustion of a hydrocarbon produces:", "options": ["Carbon monoxide and soot", "Carbon dioxide and water", "Carbon dioxide and carbon monoxide", "Water and unburnt fuel"], "correctIndex": 1 },
+        { "question": "33. Incomplete combustion results in the formation of:", "options": ["CO₂ and H₂O", "CO and soot", "Only H₂O", "Only CO₂"], "correctIndex": 1 },
+        { "question": "34. The air-fuel ratio represents:", "options": ["The mass of fuel per mass of air", "The mass of air per mass of fuel", "The volume of fuel per volume of air", "The ratio of oxygen to fuel"], "correctIndex": 1 },
+        { "question": "35. Excess air in a combustion process is:", "options": ["Air below the stoichiometric requirement", "Air above the stoichiometric requirement", "The same as stoichiometric air", "Air that is removed after combustion"], "correctIndex": 1 },
+        { "question": "36. The equivalence ratio is defined as:", "options": ["Actual fuel–air ratio divided by stoichiometric fuel–air ratio", "Stoichiometric fuel–air ratio divided by actual fuel–air ratio", "Actual air–fuel ratio divided by theoretical air", "The ratio of oxygen to nitrogen in the air"], "correctIndex": 0 },
+        { "question": "37. Which of the following factors increases the tendency of knocking in an engine?", "options": ["Branched-chain hydrocarbons", "Straight-chain hydrocarbons", "Aromatic hydrocarbons", "Oxygenates"], "correctIndex": 1 },
+        { "question": "38. The use of ethanol in gasoline helps to:", "options": ["Increase knocking", "Improve anti-knock properties", "Decrease combustion efficiency", "Increase moisture content"], "correctIndex": 1 },
+        { "question": "39. The term “adiabatic flame temperature” refers to:", "options": ["The temperature after combustion with heat loss", "The theoretical temperature with no heat loss", "The flash point of the fuel", "The autoignition temperature"], "correctIndex": 1 },
+        { "question": "40. Which of the following is a key advantage of liquid fuels?", "options": ["Easy to store without specialized equipment", "Low cost compared to solid fuels", "High calorific value per unit mass", "No risk of fire"], "correctIndex": 2 },
+        { "question": "41. Fractional distillation is primarily used in the:", "options": ["Refining of petroleum", "Gasification of coal", "Carbonization process", "Production of LPG"], "correctIndex": 0 },
+        { "question": "42. In the fractional distillation of crude oil, fractions are separated based on:", "options": ["Density", "Boiling point", "Viscosity", "Calorific value"], "correctIndex": 1 },
+        { "question": "43. The removal of solid impurities from crude oil is typically done by:", "options": ["Centrifugation", "Distillation", "Cracking", "Reforming"], "correctIndex": 0 },
+        { "question": "44. The Cottrell process is used for:", "options": ["Desalting crude oil", "Removal of water from crude oil", "Cracking of heavy oil", "Removal of sulfur compounds"], "correctIndex": 1 },
+        { "question": "45. In coal, a higher percentage of ash content results in:", "options": ["Higher heating value", "Lower heating value", "Higher calorific value", "Improved combustion efficiency"], "correctIndex": 1 },
+        { "question": "46. The calorific value of a fuel is defined as:", "options": ["The amount of heat released per unit mass of fuel", "The temperature at which fuel burns", "The amount of oxygen required for combustion", "The volume of fuel required for combustion"], "correctIndex": 0 },
+        { "question": "47. Which calorimeter is used to measure the calorific value of solid fuels?", "options": ["Boy's Gas Calorimeter", "Bomb Calorimeter", "Joule Calorimeter", "Adiabatic Calorimeter"], "correctIndex": 1 },
+        { "question": "48. In a bomb calorimeter, the fuel is burned in a sealed container known as the:", "options": ["Calorimeter chamber", "Bomb", "Reactor", "Combustion tube"], "correctIndex": 1 },
+        { "question": "49. The water equivalent of a calorimeter is determined by burning a substance with known:", "options": ["Calorific value", "Flash point", "Density", "Viscosity"], "correctIndex": 0 },
+        { "question": "50. The difference between the HCV and LCV is primarily due to:", "options": ["The water formed during combustion", "Ash content", "Combustion efficiency", "Fuel viscosity"], "correctIndex": 0 },
+        { "question": "51. What is the typical role of a catalyst in the Fischer–Tropsch process?", "options": ["To increase the temperature of combustion", "To facilitate the conversion of syngas to liquid fuels", "To remove impurities from crude oil", "To increase the octane number of gasoline"], "correctIndex": 1 },
+        { "question": "52. In the FT process, the primary feedstock is:", "options": ["Crude oil", "Synthesis gas", "Coal", "Natural gas"], "correctIndex": 1 },
+        { "question": "53. Which of the following is a by-product of low-temperature carbonization of coal?", "options": ["High-strength coke", "Volatile-rich coke", "Coke with 5-15% volatile matter", "Coke with 1-3% volatile matter"], "correctIndex": 2 },
+        { "question": "54. During high-temperature carbonization, nearly all volatile matter is:", "options": ["Retained in coke", "Driven off", "Converted to tar", "Absorbed by water"], "correctIndex": 1 },
+        { "question": "55. Which property of fuel determines its ease of ignition?", "options": ["Calorific value", "Flash point", "Density", "Viscosity"], "correctIndex": 1 },
+        { "question": "56. In the context of combustion, “knocking” refers to:", "options": ["Smooth engine operation", "Premature ignition of the fuel-air mixture", "Efficient combustion", "Delayed ignition"], "correctIndex": 1 },
+        { "question": "57. The addition of anti-knock agents primarily helps to:", "options": ["Increase fuel density", "Reduce engine knocking", "Increase moisture content", "Lower the flash point"], "correctIndex": 1 },
+        { "question": "58. The anti-knock agent MTBE stands for:", "options": ["Methyl Tertiary Butyl Ether", "Methyl Tetra Butyl Ether", "Mono Tertiary Butyl Ether", "Methane Tertiary Butyl Ether"], "correctIndex": 0 },
+        { "question": "59. The process of doping in gasoline involves:", "options": ["Adding oxygen", "Adding anti-knock agents", "Increasing water content", "Removing impurities"], "correctIndex": 1 },
+        { "question": "60. Which fuel property is measured in kcal/kg?", "options": ["Calorific value", "Density", "Viscosity", "Flash point"], "correctIndex": 0 },
+        { "question": "61. The term “coking coal” refers to coals that:", "options": ["Are non-caking", "Become soft and plastic on heating", "Have high moisture content", "Contain high levels of sulfur"], "correctIndex": 1 },
+        { "question": "62. Which of the following is a disadvantage of solid fuels?", "options": ["Easy storage", "Low ash content", "High ash content and clinker formation", "Low cost of handling"], "correctIndex": 2 },
+        { "question": "63. The higher calorific value (HCV) includes:", "options": ["Heat released minus water loss", "Latent heat of water vapor", "Only the sensible heat", "None of the above"], "correctIndex": 1 },
+        { "question": "64. The lower calorific value (LCV) is always:", "options": ["Higher than HCV", "Equal to HCV", "Lower than HCV", "Unrelated to HCV"], "correctIndex": 2 },
+        { "question": "65. In the lecture, the combustion process is described as:", "options": ["An endothermic reaction", "An exothermic reaction", "A reversible reaction", "A neutral reaction"], "correctIndex": 1 },
+        { "question": "66. Complete combustion requires a fuel to react with:", "options": ["Nitrogen", "Carbon dioxide", "Oxygen", "Hydrogen"], "correctIndex": 2 },
+        { "question": "67. Incomplete combustion can produce:", "options": ["Only CO₂", "Only H₂O", "CO and soot", "Pure oxygen"], "correctIndex": 2 },
+        { "question": "68. The term “excess air” in combustion is used to ensure:", "options": ["Incomplete combustion", "Complete combustion", "Lower flame temperature", "Reduced oxygen availability"], "correctIndex": 1 },
+        { "question": "69. Autoignition temperature is the minimum temperature required for a hydrocarbon to spontaneously ignite without an external source.", "options": ["True", "False"], "correctIndex": 0 },
+        { "question": "70. The bubble tower in a fractional distillation unit is used to:", "options": ["Cool the vapors", "Mix the crude oil", "Heat the crude oil", "Separate water from oil"], "correctIndex": 0 },
+        { "question": "71. In the refining process, after fractional distillation, the collected fractions are:", "options": ["Directly marketed", "Further treated to impart specific properties", "Mixed together", "Disposed of as waste"], "correctIndex": 1 },
+        { "question": "72. Which of the following is NOT a gaseous fuel?", "options": ["Natural Gas", "Producer Gas", "LPG", "Coal Gasoline"], "correctIndex": 3 },
+        { "question": "73. Natural gas primarily consists of:", "options": ["Ethane", "Propane", "Methane", "Butane"], "correctIndex": 2 },
+        { "question": "74. The calorific value of natural gas typically ranges between:", "options": ["8000-10000 kcal/m³", "12000-14000 kcal/m³", "15000-17000 kcal/m³", "5000-7000 kcal/m³"], "correctIndex": 1 },
+        { "question": "75. In natural gas processing, dehydration is necessary to:", "options": ["Increase sulfur content", "Remove water vapor", "Add moisture", "Increase calorific value"], "correctIndex": 1 },
+        { "question": "76. The primary goal of gas sweetening is to remove:", "options": ["Water", "Sulfur compounds", "Nitrogen", "Hydrocarbons"], "correctIndex": 1 },
+        { "question": "77. LPG is stored under:", "options": ["High pressure", "Ambient pressure", "Vacuum conditions", "Low temperature without pressure"], "correctIndex": 0 },
+        { "question": "78. The term “knocking” in an internal combustion engine is most directly associated with:", "options": ["Engine efficiency", "Fuel quality", "Premature fuel ignition", "Excessive air-fuel ratio"], "correctIndex": 2 },
+        { "question": "79. The use of oxygenates in gasoline helps to:", "options": ["Increase knocking", "Improve combustion", "Lower octane number", "Increase sulfur content"], "correctIndex": 1 },
+        { "question": "80. In the context of the lecture, “power alcohol” refers to:", "options": ["A mixture of diesel and ethanol", "A blend of ethanol and gasoline", "Pure ethanol", "A mixture of methanol and gasoline"], "correctIndex": 1 },
+        { "question": "81. Which of the following is a benefit of using ethanol in fuel blends?", "options": ["Reduces carbon monoxide emissions", "Increases knocking", "Decreases combustion efficiency", "Increases fuel density"], "correctIndex": 0 },
+        { "question": "82. The term “catalytic conversion” in the FT process refers to:", "options": ["Physical separation of components", "Chemical transformation using a catalyst", "Removal of impurities", "Thermal cracking"], "correctIndex": 1 },
+        { "question": "83. In the FT process, operating temperature influences:", "options": ["Syncrude composition", "Volume of gas produced", "Color of the product", "Viscosity of fuel"], "correctIndex": 0 },
+        { "question": "84. Which type of fuel has a higher energy density?", "options": ["Solid fuels", "Liquid fuels", "Gaseous fuels", "All have equal energy density"], "correctIndex": 1 },
+        { "question": "85. The process of gas reforming is used to produce:", "options": ["Synthesis gas", "Crude oil", "LPG", "Coke"], "correctIndex": 0 },
+        { "question": "86. A key disadvantage of using liquid fuels is:", "options": ["Easy storage", "High cost of special storage tanks", "Low calorific value", "Non-flammable nature"], "correctIndex": 1 },
+        { "question": "87. The process of desulfurization in crude oil refining is important because:", "options": ["Sulfur improves fuel quality", "Sulfur compounds cause corrosion", "Sulfur increases calorific value", "Sulfur is a catalyst"], "correctIndex": 1 },
+        { "question": "88. In the context of coal, a lower moisture content is desirable because:", "options": ["It increases calorific value", "It decreases handling cost", "It improves ash formation", "It increases volatile matter"], "correctIndex": 0 },
+        { "question": "89. Which of the following best describes the term “volatile matter” in coal?", "options": ["Fixed carbon", "Water content", "Gaseous products released on heating", "Inorganic impurities"], "correctIndex": 2 },
+        { "question": "90. The process of “doping” gasoline involves adding:", "options": ["Oxygen", "Anti-knock agents", "Water", "Sulfur compounds"], "correctIndex": 1 },
+        { "question": "91. In a gas calorimeter, the primary purpose is to:", "options": ["Measure the calorific value of gaseous fuels", "Determine fuel viscosity", "Measure flash point", "Assess autoignition temperature"], "correctIndex": 0 },
+        { "question": "92. The term “demethanizer” in natural gas processing is used to:", "options": ["Separate methane from other hydrocarbons", "Remove water", "Add nitrogen", "Increase oxygen content"], "correctIndex": 0 },
+        { "question": "93. Which parameter is used to calculate the heating value in a bomb calorimeter?", "options": ["Mass of fuel", "Temperature rise of water", "Volume of oxygen", "Pressure in the bomb"], "correctIndex": 1 },
+        { "question": "94. The phrase “adiabatic” in adiabatic flame temperature means:", "options": ["With heat loss", "Without heat exchange", "Under high pressure", "With added moisture"], "correctIndex": 1 },
+        { "question": "95. In the lecture, the process of “sweetening” natural gas removes:", "options": ["Water vapor", "Sulfur compounds", "Carbon dioxide", "Hydrocarbons"], "correctIndex": 1 },
+        { "question": "96. The primary reason for using excess air in combustion is to:", "options": ["Increase flame temperature", "Ensure complete combustion", "Reduce calorific value", "Increase moisture content"], "correctIndex": 1 },
+        { "question": "97. The term “Orsat’s gas analyzer” is used to:", "options": ["Measure fuel viscosity", "Analyze combustion exhaust gases", "Determine flash point", "Calculate autoignition temperature"], "correctIndex": 1 },
+        { "question": "98. Which process converts coal into coke with low volatile content?", "options": ["Low-temperature carbonization", "High-temperature carbonization", "Fractional distillation", "Cracking"], "correctIndex": 1 },
+        { "question": "99. The by-product gas from low-temperature carbonization typically has a calorific value of:", "options": ["6500-9500 kcal/m³", "4000-5000 kcal/m³", "10000-12000 kcal/m³", "2000-3000 kcal/m³"], "correctIndex": 0 },
+        { "question": "100. The main purpose of a cooling chamber in a fractional distillation unit is to:", "options": ["Heat the crude oil", "Condense vapors", "Separate water", "Mix different fractions"], "correctIndex": 1 },
+        { "question": "101. Which fuel type is primarily derived from crude oil?", "options": ["Solid fuels", "Liquid fuels", "Gaseous fuels", "Nuclear fuels"], "correctIndex": 1 },
+        { "question": "102. The process of refining petroleum involves:", "options": ["Only distillation", "Removal of impurities and fractionation", "Gasification", "Direct combustion"], "correctIndex": 1 },
+        { "question": "103. What is the significance of the air-fuel ratio in combustion?", "options": ["Determines the color of the flame", "Controls combustion efficiency", "Affects fuel viscosity", "Increases autoignition temperature"], "correctIndex": 1 },
+        { "question": "104. The term “volatile” in fuel properties refers to:", "options": ["Solid residue", "The ease with which a substance vaporizes", "The calorific value", "The ignition temperature"], "correctIndex": 1 },
+        { "question": "105. In solid fuels, a high ash content is undesirable because:", "options": ["It increases the energy output", "It reduces the heating value", "It improves combustion", "It increases the moisture content"], "correctIndex": 1 },
+        { "question": "106. The “combustion zone” in an engine refers to:", "options": ["Area where fuel is injected", "Area where combustion occurs", "Area where exhaust gases exit", "Area for fuel storage"], "correctIndex": 1 },
+        { "question": "107. In the lecture, what is used as a measure of fuel quality?", "options": ["Flash point", "Calorific value", "Viscosity", "Color"], "correctIndex": 1 },
+        { "question": "108. Which process is responsible for the formation of coke from coal?", "options": ["Refining", "Carbonization", "Distillation", "Gasification"], "correctIndex": 1 },
+        { "question": "109. The term “iso” in isooctane signifies:", "options": ["Straight-chain", "Branched-chain", "Cyclic", "Aromatic"], "correctIndex": 1 },
+        { "question": "110. In the context of the lecture, the combustion of a fuel in an insulated chamber is called:", "options": ["Adiabatic combustion", "Isothermal combustion", "Exothermic combustion", "Catalytic combustion"], "correctIndex": 0 },
+        { "question": "111. Which factor does NOT affect the combustion process?", "options": ["Fuel-air mixing", "Fuel composition", "Ambient temperature", "Fuel color"], "correctIndex": 3 },
+        { "question": "112. The process of cracking in petroleum refining is used to:", "options": ["Increase molecular weight", "Break down large molecules", "Remove impurities", "Enhance viscosity"], "correctIndex": 1 },
+        { "question": "113. Which of the following is a disadvantage of liquid fuels?", "options": ["Ease of transportation", "Storage challenges", "High energy density", "Clean burning"], "correctIndex": 1 },
+        { "question": "114. The removal of nitrogen compounds is typically not a primary focus in:", "options": ["Crude oil refining", "Natural gas processing", "Coal carbonization", "Fischer–Tropsch process"], "correctIndex": 2 },
+        { "question": "115. The measurement of temperature change in a calorimeter helps determine the:", "options": ["Viscosity", "Calorific value", "Density", "Flash point"], "correctIndex": 1 },
+        { "question": "116. Which of the following is a characteristic of an ideal fuel?", "options": ["Low calorific value", "High moisture content", "High availability", "High ash content"], "correctIndex": 2 },
+        { "question": "117. A fuel with a high autoignition temperature will:", "options": ["Ignite easily", "Require higher temperature for ignition", "Have a lower flash point", "Produce more soot"], "correctIndex": 1 },
+        { "question": "118. The term “doping” in the context of fuel refers to:", "options": ["Adding water", "Adding anti-knock agents", "Removing volatile matter", "Increasing sulfur content"], "correctIndex": 1 },
+        { "question": "119. Which of the following is a method used to determine the calorific value of a fuel?", "options": ["Bomb calorimetry", "Fractional distillation", "Gas chromatography", "Spectroscopy"], "correctIndex": 0 },
+        { "question": "120. In a combustion process, if the air supplied is less than stoichiometric, the result is:", "options": ["Complete combustion", "Incomplete combustion", "No combustion", "Excessive combustion"], "correctIndex": 1 },
+        { "question": "121. The term “ignition lag” refers to:", "options": ["The time between fuel injection and spark", "The delay between reaching ignition temperature and ignition", "The time taken to cool the engine", "The delay in fuel mixing"], "correctIndex": 1 },
+        { "question": "122. The anti-knock property of a fuel increases with:", "options": ["Long straight chains", "Branched-chain hydrocarbons", "High sulfur content", "High moisture content"], "correctIndex": 1 },
+        { "question": "123. A fuel’s viscosity affects its:", "options": ["Storage stability", "Combustion characteristics", "Color", "Moisture content"], "correctIndex": 1 },
+        { "question": "124. Which fuel property is important for ensuring efficient mixing with air?", "options": ["Vapor pressure", "Viscosity", "Calorific value", "Ash content"], "correctIndex": 1 },
+        { "question": "125. The latent heat of vaporization in a combustion process primarily affects:", "options": ["Higher calorific value", "Lower calorific value", "Fuel density", "Autoignition temperature"], "correctIndex": 1 },
+        { "question": "126. The process of gasification converts solid fuel into:", "options": ["Liquid fuel", "Gaseous fuel", "Solid residue", "Ash"], "correctIndex": 1 },
+        { "question": "127. In natural gas processing, NGL stands for:", "options": ["Natural Gas Liquids", "Non-Gaseous Lumps", "Natural Gas Levels", "Non-Liquid Gases"], "correctIndex": 0 },
+        { "question": "128. The demethanizer in natural gas processing is used to separate:", "options": ["Ethane", "Methane", "Propane", "Butane"], "correctIndex": 1 },
+        { "question": "129. The process of electric desalting in petroleum refining is used to remove:", "options": ["Water", "Sulfur compounds", "Salts like NaCl and MgCl₂", "Solid impurities"], "correctIndex": 2 },
+        { "question": "130. Which of the following is an example of a secondary (artificial) fuel?", "options": ["Wood", "Coal", "Charcoal", "Peat"], "correctIndex": 2 },
+        { "question": "131. The term “fire point” is defined as:", "options": ["The temperature at which fuel vapors ignite", "The temperature at which the fuel continues to burn after ignition", "The autoignition temperature", "The flash point plus 50°C"], "correctIndex": 1 },
+        { "question": "132. The boiling point of water plays a role in:", "options": ["Determining HCV", "Determining LCV", "Measuring viscosity", "Assessing density"], "correctIndex": 1 },
+        { "question": "133. The chemical composition of crude oil is primarily:", "options": ["Pure hydrocarbons", "A mixture of hydrocarbons with sulfur, nitrogen, and oxygen", "Only aromatic compounds", "Only paraffinic compounds"], "correctIndex": 1 },
+        { "question": "134. Which process in refining involves heating crude oil to about 400°C?", "options": ["Fractional distillation", "Cracking", "Reforming", "Carbonization"], "correctIndex": 0 },
+        { "question": "135. In a combustion reaction, the law of conservation of mass states that:", "options": ["Mass is lost", "Mass is gained", "Mass remains constant", "Mass doubles"], "correctIndex": 2 },
+        { "question": "136. The higher the compression ratio in an engine, the:", "options": ["Lower the efficiency", "Higher the efficiency", "Unchanged efficiency", "Lower the knocking tendency"], "correctIndex": 1 },
+        { "question": "137. The term “steady-flow process” in combustion refers to:", "options": ["Intermittent fuel supply", "Constant fuel and air flow", "Cyclic combustion", "Variable combustion"], "correctIndex": 1 },
+        { "question": "138. Which instrument is used to analyze the composition of combustion exhaust gases?", "options": ["Bomb calorimeter", "Orsat's gas analyzer", "Thermometer", "Barometer"], "correctIndex": 1 },
+        { "question": "139. The reaction: C₃H₈ + 5O₂ → 3CO₂ + 4H₂O represents:", "options": ["Incomplete combustion", "Complete combustion", "Secondary combustion", "Autoignition"], "correctIndex": 1 },
+        { "question": "140. In an internal combustion engine, a slight metallic knock at the highest useful compression ratio (HUCR) indicates:", "options": ["Optimal performance", "Engine failure", "Slight knocking", "Complete knocking"], "correctIndex": 2 },
+        { "question": "141. The term “cetane number” is associated with:", "options": ["Gasoline", "Diesel fuel", "LPG", "Natural gas"], "correctIndex": 1 },
+        { "question": "142. A higher cetane number indicates:", "options": ["Longer ignition delay", "Shorter ignition delay", "Higher knocking tendency", "Lower combustion efficiency"], "correctIndex": 1 },
+        { "question": "143. The presence of which substance in crude oil can lead to scale formation in refining equipment?", "options": ["NaCl", "Oxygen", "Carbon", "Methane"], "correctIndex": 0 },
+        { "question": "144. The ideal air-fuel ratio is important for:", "options": ["Maximizing unburned fuel", "Achieving complete combustion", "Increasing emissions", "Lowering flame temperature"], "correctIndex": 1 },
+        { "question": "145. Which of the following is a method used to produce synthetic petrol?", "options": ["Fischer–Tropsch process", "Fractional distillation", "Desalting", "Electrolysis"], "correctIndex": 0 },
+        { "question": "146. In the Bergius process, coal is:", "options": ["Mixed with water", "Converted directly to coke", "Made into a paste with heavy oil", "Refined like crude oil"], "correctIndex": 2 },
+        { "question": "147. Which of the following is true regarding the combustion of hydrogen?", "options": ["It produces high levels of CO₂", "It burns with a high flame temperature", "It has a high autoignition temperature", "It produces soot"], "correctIndex": 1 },
+        { "question": "148. The term “organoleptic” in fuel properties refers to:", "options": ["Taste and odor", "Calorific value", "Viscosity", "Density"], "correctIndex": 0 },
+        { "question": "149. A low moisture content in fuel is desirable because:", "options": ["It decreases storage efficiency", "It increases the effective heating value", "It increases ash content", "It causes incomplete combustion"], "correctIndex": 1 },
+        { "question": "150. Which of the following best describes “producer gas”?", "options": ["A mixture of CO, H₂, and N₂", "Pure methane", "Liquid fuel", "Solid carbon"], "correctIndex": 0 },
+        { "question": "151. In the production of producer gas, air is mixed with:", "options": ["High steam", "A small amount of steam", "No steam", "Excess water"], "correctIndex": 1 },
+        { "question": "152. The composition of producer gas typically includes:", "options": ["22-30% CO, 8-12% H₂, remainder N₂ and CO₂", "50% methane and 50% ethane", "Pure hydrogen", "Only nitrogen"], "correctIndex": 0 },
+        { "question": "153. The term “gas reforming” refers to:", "options": ["Conversion of gas to liquid", "Production of synthesis gas from natural gas", "Removal of impurities", "Increasing sulfur content"], "correctIndex": 1 },
+        { "question": "154. The efficiency of combustion can be loosely determined by the:", "options": ["Color of the flame", "Volume of fuel", "Amount of air used", "Temperature of the fuel"], "correctIndex": 0 },
+        { "question": "155. In the context of the lecture, “latent heat” refers to:", "options": ["Heat released during condensation", "Heat absorbed during water vapor formation", "Sensible heat", "Heat of combustion"], "correctIndex": 1 },
+        { "question": "156. The term “specific gravity” in fuel properties is another name for:", "options": ["Density", "Viscosity", "Calorific value", "Boiling point"], "correctIndex": 0 },
+        { "question": "157. Which of the following factors can cause incomplete combustion?", "options": ["Excess oxygen", "Insufficient mixing", "High flame temperature", "Adequate air supply"], "correctIndex": 1 },
+        { "question": "158. In a combustion reaction, the conservation of atoms means:", "options": ["The total mass of reactants equals products", "The number of atoms of each element remains constant", "Only oxygen atoms are conserved", "Hydrogen atoms are created"], "correctIndex": 1 },
+        { "question": "159. A high-calorific fuel generally:", "options": ["Releases less heat per unit mass", "Releases more heat per unit mass", "Has a lower energy density", "Is unsuitable for combustion"], "correctIndex": 1 },
+        { "question": "160. The process of “desalting” in crude oil processing removes:", "options": ["Water", "Salts", "Sulfur", "Organic compounds"], "correctIndex": 1 },
+        { "question": "161. Which instrument is used to measure temperature changes in a calorimeter?", "options": ["Thermometer", "Barometer", "Manometer", "Spectrometer"], "correctIndex": 0 },
+        { "question": "162. The term “bubble tower” in fractional distillation is used to:", "options": ["Introduce heat", "Provide condensation surfaces", "Mix the fractions", "Increase pressure"], "correctIndex": 1 },
+        { "question": "163. Which of the following is a benefit of using localStorage in web applications?", "options": ["Reduced load time", "High cost", "Server-side storage", "Data loss on refresh"], "correctIndex": 0 },
+        { "question": "164. The term “session storage” differs from localStorage in that:", "options": ["It persists across sessions", "It is cleared when the session ends", "It is stored on the server", "It requires payment"], "correctIndex": 1 },
+        { "question": "165. The process of “fractionation” in natural gas processing is used to:", "options": ["Remove water", "Separate heavier hydrocarbons", "Crack methane", "Increase calorific value"], "correctIndex": 1 },
+        { "question": "166. The term “combustion efficiency” refers to:", "options": ["The ratio of heat produced to fuel consumed", "The speed of combustion", "The volume of air used", "The color of the flame"], "correctIndex": 0 },
+        { "question": "167. Which parameter is most directly affected by the compression ratio in an engine?", "options": ["Fuel quality", "Air-fuel ratio", "Ignition delay", "Calorific value"], "correctIndex": 2 },
+        { "question": "168. The presence of unburned carbon in exhaust gases indicates:", "options": ["Complete combustion", "Incomplete combustion", "High combustion efficiency", "Excess oxygen"], "correctIndex": 1 },
+        { "question": "169. In combustion, the term “exothermic” means:", "options": ["Heat is absorbed", "Heat is released", "No heat change", "Only light is produced"], "correctIndex": 1 },
+        { "question": "170. The use of a timer in a gas calorimeter helps to:", "options": ["Control fuel flow", "Measure the rate of gas consumption", "Adjust the pressure", "Regulate water temperature"], "correctIndex": 1 },
+        { "question": "171. The term “liquefied” in LPG indicates that the gas is stored:", "options": ["At low temperature", "Under high pressure", "Both low temperature and high pressure", "At ambient conditions"], "correctIndex": 2 },
+        { "question": "172. Which property of a fuel directly affects its transportation efficiency?", "options": ["Calorific value", "Energy density", "Flash point", "Viscosity"], "correctIndex": 1 },
+        { "question": "173. The measurement of “heating value” is essential for:", "options": ["Determining fuel cost efficiency", "Measuring viscosity", "Assessing color", "Determining water content"], "correctIndex": 0 },
+        { "question": "174. A fuel with low ash content is preferred because:", "options": ["It produces more heat", "It reduces non-combustible residue", "It increases moisture", "It enhances flavor"], "correctIndex": 1 },
+        { "question": "175. In the refining of petroleum, the initial removal of water is achieved by:", "options": ["Centrifugation", "Electric desalting", "Fractional distillation", "Cracking"], "correctIndex": 1 },
+        { "question": "176. The term “thermal stage” in the Claus process refers to:", "options": ["The catalytic stage", "The initial oxidation of H₂S", "The final recovery of sulfur", "The removal of water"], "correctIndex": 1 },
+        { "question": "177. Which reaction is the overall reaction in the Claus process?", "options": ["3H₂S + 1.5O₂ → 3/nSn + 3H₂O", "2H₂S + SO₂ → (3/8)S₈ + 2H₂O", "C₃H₈ + 5O₂ → 3CO₂ + 4H₂O", "None of the above"], "correctIndex": 0 },
+        { "question": "178. The term “coke” in coal processing refers to:", "options": ["A by-product of carbonization", "Unburnt coal", "Crude oil residue", "Synthetic fuel"], "correctIndex": 0 },
+        { "question": "179. The process of “pre-heating” crude oil in fractional distillation is done to:", "options": ["Lower its viscosity", "Vaporize the oil", "Remove impurities", "Separate water"], "correctIndex": 1 },
+        { "question": "180. The combustion process in an internal combustion engine is initiated by:", "options": ["Spontaneous ignition", "A spark plug", "Compression alone", "Fuel injection"], "correctIndex": 1 },
+        { "question": "181. In the context of combustion, “flammability limits” refer to:", "options": ["The range of fuel concentrations that will burn", "The maximum flame temperature", "The minimum autoignition temperature", "The flash point"], "correctIndex": 0 },
+        { "question": "182. Which of the following factors does NOT affect the octane number of a fuel?", "options": ["Hydrocarbon structure", "Presence of anti-knock agents", "Moisture content", "Number of carbon atoms"], "correctIndex": 2 },
+        { "question": "183. The process of “reforming” in petroleum processing is used to:", "options": ["Convert straight-run hydrocarbons into high-octane products", "Remove sulfur", "Separate crude oil fractions", "Increase water content"], "correctIndex": 0 },
+        { "question": "184. Which fuel is known for its high energy density and ease of transport via pipelines?", "options": ["Solid fuels", "Liquid fuels", "Gaseous fuels", "Nuclear fuels"], "correctIndex": 2 },
+        { "question": "185. The term “volatile” in the context of coal refers to:", "options": ["Fixed carbon", "Moisture", "Components that vaporize on heating", "Ash content"], "correctIndex": 2 },
+        { "question": "186. The proper mixing of fuel and air is crucial for:", "options": ["Complete combustion", "Incomplete combustion", "Lower flame temperature", "Higher viscosity"], "correctIndex": 0 },
+        { "question": "187. In a combustion process, the term “flame length” is an indicator of:", "options": ["Combustion efficiency", "Fuel viscosity", "Moisture content", "Calorific value"], "correctIndex": 0 },
+        { "question": "188. The term “coking” in coal processing refers to:", "options": ["The formation of a soft, plastic mass", "The removal of ash", "The increase of volatile matter", "The separation of water"], "correctIndex": 0 },
+        { "question": "189. The “calorific value” of a fuel is measured in:", "options": ["Joules per gram", "Calories per gram", "Both A and B", "Liters per kilogram"], "correctIndex": 2 },
+        { "question": "190. Which of the following best describes “naphthalene” in the context of calorimetry?", "options": ["A fuel with low calorific value", "A substance used to calibrate a calorimeter", "A type of coal", "A catalyst in combustion"], "correctIndex": 1 },
+        { "question": "191. The term “gas producer” refers to:", "options": ["A device for producing natural gas", "A reactor for producing producer gas from coal", "A type of gas storage tank", "A method of gas transportation"], "correctIndex": 1 },
+        { "question": "192. In the lecture, what is indicated by a blue flame during combustion?", "options": ["Incomplete combustion", "Proper mixing of fuel and air", "Excess fuel", "High moisture content"], "correctIndex": 1 },
+        { "question": "193. The measurement of “air-fuel ratio” is important for:", "options": ["Engine efficiency", "Fuel storage", "Calorific value determination", "Ash content measurement"], "correctIndex": 0 },
+        { "question": "194. The term “synthesis gas” primarily consists of:", "options": ["CO and H₂", "CO₂ and H₂O", "CH₄ and N₂", "O₂ and N₂"], "correctIndex": 0 },
+        { "question": "195. The process of “gasification” of coal converts it into:", "options": ["Liquid fuel", "Gaseous fuel", "Solid residue", "Coke"], "correctIndex": 1 },
+        { "question": "196. A fuel with a high octane number is less likely to:", "options": ["Knock", "Ignite", "Release heat", "Store energy"], "correctIndex": 0 },
+        { "question": "197. The presence of which component in a fuel can lead to environmental pollution when burned?", "options": ["Carbon", "Sulfur", "Hydrogen", "Oxygen"], "correctIndex": 1 },
+        { "question": "198. The term “fuel density” refers to:", "options": ["Mass per unit volume of fuel", "Heat content per unit mass", "Volume of fuel per unit energy", "Vapor pressure of fuel"], "correctIndex": 0 },
+        { "question": "199. Which factor is most critical in determining the storage requirements for liquid fuels?", "options": ["Calorific value", "Cost of storage tanks", "Volatility", "Viscosity"], "correctIndex": 2 },
+        { "question": "200. The process of “cracking” in petroleum refining involves:", "options": ["Breaking large hydrocarbon molecules into smaller ones", "Combining small molecules into larger ones", "Removing impurities", "Increasing water content"], "correctIndex": 0 },
+         {
+         "question": "201. The process of low‐temperature carbonization of coal (500–700°C) typically yields coke with a volatile matter content of:",
+         "options": [
+           "1–3%",
+           "5–15%",
+           "20–30%",
+           "30–40%"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "202. High‐temperature carbonization of coal is generally carried out at temperatures approximately:",
+         "options": [
+           "500–700°C",
+           "700–900°C",
+           "900–1200°C",
+           "1200–1500°C"
+         ],
+         "correctIndex": 2
+       },
+       {
+         "question": "203. In the context of combustion, the term 'stoichiometric air' refers to:",
+         "options": [
+           "The actual air supplied during combustion",
+           "The minimum air required for complete combustion",
+           "Air supplied in excess of the theoretical requirement",
+           "Air with an added oxidizer"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "204. Which of the following best describes 'excess air' in a combustion process?",
+         "options": [
+           "Air exactly equal to the stoichiometric requirement",
+           "Air below the stoichiometric requirement",
+           "Air above the stoichiometric requirement",
+           "Air with reduced oxygen content"
+         ],
+         "correctIndex": 2
+       },
+       {
+         "question": "205. In complete combustion, the carbon in the fuel is converted primarily into:",
+         "options": [
+           "Carbon monoxide (CO)",
+           "Carbon dioxide (CO2)",
+           "Elemental carbon (C)",
+           "Acetylene (C2H2)"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "206. Incomplete combustion typically results in the formation of:",
+         "options": [
+           "Carbon dioxide and water",
+           "Carbon monoxide, soot, and water",
+           "Only water",
+           "Only carbon dioxide"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "207. The octane number of a fuel measures its resistance to:",
+         "options": [
+           "Knocking",
+           "Autoignition",
+           "Flash point initiation",
+           "Viscosity changes"
+         ],
+         "correctIndex": 0
+       },
+       {
+         "question": "208. n-Heptane is assigned an octane rating of:",
+         "options": [
+           "100",
+           "50",
+           "0",
+           "75"
+         ],
+         "correctIndex": 2
+       },
+       {
+         "question": "209. The process of 'doping' gasoline is performed to:",
+         "options": [
+           "Lower its octane rating",
+           "Increase its octane rating",
+           "Decrease fuel density",
+           "Increase fuel viscosity"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "210. The Fischer–Tropsch process converts synthesis gas primarily into:",
+         "options": [
+           "Gasoline",
+           "Synthetic crude oil",
+           "Diesel fuel",
+           "Liquefied petroleum gas (LPG)"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "211. In the Bergius process, coal is converted into synthetic petrol primarily through:",
+         "options": [
+           "Direct distillation",
+           "Hydrogenation under high pressure",
+           "Thermal cracking",
+           "Fractional distillation"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "212. Liquid fuels are primarily obtained from:",
+         "options": [
+           "Natural gas",
+           "Coal",
+           "Crude oil",
+           "Biomass"
+         ],
+         "correctIndex": 2
+       },
+       {
+         "question": "213. Gaseous fuels such as LPG are typically stored under:",
+         "options": [
+           "Ambient pressure",
+           "High pressure",
+           "Vacuum conditions",
+           "Low temperature without pressure"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "214. In a bomb calorimeter, the water equivalent of the calorimeter is determined by:",
+         "options": [
+           "Burning a fuel sample of unknown calorific value",
+           "Using a fuel of known calorific value",
+           "Measuring the water temperature drop directly",
+           "Calculating the mass of the fuel sample"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "215. The lower calorific value (LCV) of a fuel is obtained by subtracting the latent heat of water vapor from the:",
+         "options": [
+           "Higher calorific value (HCV)",
+           "Net calorific value",
+           "Apparent calorific value",
+           "Gross calorific value"
+         ],
+         "correctIndex": 0
+       },
+       {
+         "question": "216. The process of fractional distillation in petroleum refining separates crude oil based primarily on:",
+         "options": [
+           "Density differences",
+           "Boiling point differences",
+           "Viscosity differences",
+           "Calorific value differences"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "217. During petroleum refining, the removal of water from crude oil is typically achieved by:",
+         "options": [
+           "Centrifugation",
+           "Electric desalting",
+           "Catalytic cracking",
+           "Thermal decomposition"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "218. In natural gas processing, 'sweetening' refers to the removal of:",
+         "options": [
+           "Water vapor",
+           "Sulfur compounds",
+           "Nitrogen",
+           "Carbon dioxide"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "219. Producer gas, produced via gasification of coal, primarily contains which combustible component?",
+         "options": [
+           "Carbon monoxide (CO)",
+           "Hydrogen (H2)",
+           "Methane (CH4)",
+           "Oxygen (O2)"
+         ],
+         "correctIndex": 0
+       },
+       {
+         "question": "220. A high ash content in coal is undesirable because it:",
+         "options": [
+           "Increases the heating value",
+           "Reduces the heating value and increases slag formation",
+           "Improves combustion efficiency",
+           "Enhances fuel density"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "221. The term 'volatile matter' in coal refers to:",
+         "options": [
+           "Fixed carbon",
+           "Water content",
+           "Gaseous products released upon heating",
+           "Inorganic impurities"
+         ],
+         "correctIndex": 2
+       },
+       {
+         "question": "222. In coal analysis, fixed carbon is determined by subtracting moisture, ash, and volatile matter from the:",
+         "options": [
+           "Total mass of the coal",
+           "Calorific value of the coal",
+           "Carbon content of the coal",
+           "Gross weight of the coal sample"
+         ],
+         "correctIndex": 0
+       },
+       {
+         "question": "223. The ideal air–fuel ratio is important for:",
+         "options": [
+           "Maximizing unburned fuel",
+           "Achieving complete combustion",
+           "Increasing emissions",
+           "Lowering the flame temperature"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "224. The equivalence ratio in combustion is defined as:",
+         "options": [
+           "Actual fuel–air ratio divided by the stoichiometric fuel–air ratio",
+           "Stoichiometric fuel–air ratio divided by the actual fuel–air ratio",
+           "Actual air–fuel ratio divided by the theoretical air–fuel ratio",
+           "The ratio of oxygen to nitrogen in the combustion air"
+         ],
+         "correctIndex": 0
+       },
+       {
+         "question": "225. The latent heat of vaporization in a combustion process primarily affects the:",
+         "options": [
+           "Higher calorific value",
+           "Lower calorific value",
+           "Fuel density",
+           "Autoignition temperature"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "226. The term 'coking' in coal processing refers to the:",
+         "options": [
+           "Formation of a soft, plastic mass upon heating in the absence of air",
+           "Removal of ash content from coal",
+           "Increase in volatile matter content",
+           "Separation of water from coal"
+         ],
+         "correctIndex": 0
+       },
+       {
+         "question": "227. An ideal fuel should have all of the following characteristics except:",
+         "options": [
+           "High calorific value",
+           "High availability",
+           "High moisture content",
+           "Low ash content"
+         ],
+         "correctIndex": 2
+       },
+       {
+         "question": "228. The autoignition temperature of a fuel is defined as:",
+         "options": [
+           "The temperature at which fuel vapors ignite when exposed to a spark",
+           "The lowest temperature at which fuel spontaneously ignites in air",
+           "The flash point plus 100°C",
+           "The maximum temperature reached during combustion"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "229. In a bomb calorimeter experiment, a higher temperature rise in the water indicates:",
+         "options": [
+           "A lower calorific value of the fuel",
+           "A higher calorific value of the fuel",
+           "A greater water equivalent of the apparatus",
+           "More fuel having been burned"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "230. The primary function of the bubble tower in a fractional distillation unit is to:",
+         "options": [
+           "Introduce heat to the crude oil",
+           "Provide condensation surfaces for vaporized fractions",
+           "Mix the crude oil thoroughly",
+           "Increase the pressure within the still"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "231. In the Claus process for sulfur recovery, the thermal stage typically operates at temperatures of approximately:",
+         "options": [
+           "300–500 K",
+           "1300–1700 K",
+           "470–620 K",
+           "900–1200 K"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "232. The primary goal of the 'desalting' process in petroleum refining is to remove:",
+         "options": [
+           "Water",
+           "Salts such as NaCl and MgCl₂",
+           "Sulfur compounds",
+           "Solid impurities"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "233. In a gas calorimeter, which parameter is most critical for determining the calorific value?",
+         "options": [
+           "Volume of gas burned",
+           "Pressure of the gas",
+           "Temperature rise of the cooling water",
+           "Mass of the fuel sample"
+         ],
+         "correctIndex": 2
+       },
+       {
+         "question": "234. In fuel properties, the term 'specific gravity' is synonymous with:",
+         "options": [
+           "Density",
+           "Viscosity",
+           "Calorific value",
+           "Boiling point"
+         ],
+         "correctIndex": 0
+       },
+       {
+         "question": "235. The primary function of a turbo‐expander in natural gas processing is to:",
+         "options": [
+           "Compress the gas for transportation",
+           "Expand the gas to cool it before distillation",
+           "Remove impurities from the gas",
+           "Increase the calorific value of the gas"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "236. In Boy’s Gas Calorimeter, the measurement of the water temperature change is used to calculate:",
+         "options": [
+           "The mass of gas burned",
+           "The heat absorbed by the water",
+           "The volume of gas at STP",
+           "The water equivalent of the apparatus"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "237. The term 'adiabatic flame temperature' refers to:",
+         "options": [
+           "The flame temperature in a fuel‐rich mixture",
+           "The theoretical temperature reached if no heat is lost during combustion",
+           "The flash point of the fuel",
+           "The autoignition temperature of the fuel"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "238. In internal combustion engines, a higher compression ratio typically results in:",
+         "options": [
+           "Lower efficiency",
+           "Higher efficiency",
+           "No change in efficiency",
+           "Increased knocking regardless of fuel properties"
+         ],
+         "correctIndex": 1
+       },
+       {
+         "question": "239. Pyrolysis differs from carbonization primarily in that pyrolysis:",
+         "options": [
+           "Produces a higher yield of liquid products",
+           "Produces only gaseous products",
+           "Requires the presence of oxygen",
+           "Occurs at significantly lower temperatures"
+         ],
+         "correctIndex": 0
+       },
+       {
+         "question": "240. In natural gas processing, dehydration is essential because:",
+         "options": [
+           "Water vapor reduces the calorific value of the gas",
+           "Water vapor promotes the formation of hydrates and corrosion",
+           "Removal of water increases the methane content",
+           "Water vapor is needed for gas sweetening"
+         ],
+         "correctIndex": 1
+       }
         
-        function updateJumpList() {
-            let jumpSelect = document.getElementById("jumpToQuestion");
-            jumpSelect.innerHTML = "";
-            quizQuestions.forEach((q, index) => {
-                let option = document.createElement("option");
-                option.value = index;
-                option.textContent = `Question ${index + 1}`;
-                jumpSelect.appendChild(option);
-            });
-            jumpSelect.value = lastQuestionIndex[quizMode];
+      ]; 
+    let quizMode = "all";
+    let quizQuestions = allQuestions.slice(); // default: all questions
+    let currentIndex = parseInt(localStorage.getItem('fuelCombCurrentIndex')) || 0;
+    let correctCount = parseInt(localStorage.getItem('fuelCombCorrectCount')) || 0;
+    let wrongQuestions = JSON.parse(localStorage.getItem('fuelCombWrongQuestions')) || [];
+    // Backup state for All mode (so we can resume where we left off)
+    let backupAllState = null;
+
+    function updateScoreboard() {
+      document.getElementById('currentIndexDisplay').textContent = currentIndex + 1;
+      document.getElementById('totalQuestionsDisplay').textContent = quizQuestions.length;
+      document.getElementById('correctCountDisplay').textContent = correctCount;
+      document.getElementById('wrongCountDisplay').textContent = wrongQuestions.length;
+      document.getElementById('modeDisplay').textContent = quizMode === "all" ? "All Questions" : "Wrong Answers Only";
+      updateJumpInput();
+    }
+
+    function saveProgress() {
+      localStorage.setItem('fuelCombCurrentIndex', currentIndex);
+      localStorage.setItem('fuelCombCorrectCount', correctCount);
+      localStorage.setItem('fuelCombWrongQuestions', JSON.stringify(wrongQuestions));
+    }
+
+    function loadQuestion() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = "";
+      document.getElementById('feedback').textContent = "";
+      // Update the max attribute for the jump input
+      document.getElementById('jumpInput').max = quizQuestions.length;
+      if (currentIndex >= quizQuestions.length) {
+        quizDiv.innerHTML =
+          "<h2>Quiz Completed!</h2><p>Your score: " +
+          correctCount +
+          " / " +
+          quizQuestions.length +
+          "</p>";
+        document.getElementById('submitBtn').style.display = "none";
+        document.getElementById('nextBtn').style.display = "none";
+        return;
+      }
+      const qObj = quizQuestions[currentIndex];
+      const container = document.createElement('div');
+      container.className = "question-container";
+      const qText = document.createElement('p');
+      qText.textContent = qObj.question;
+      container.appendChild(qText);
+
+      const optionsDiv = document.createElement('div');
+      optionsDiv.className = "options";
+      qObj.options.forEach((opt, idx) => {
+        const label = document.createElement('label');
+        const radio = document.createElement('input');
+        radio.type = "radio";
+        radio.name = "option";
+        radio.value = idx;
+        label.appendChild(radio);
+        label.insertAdjacentText("beforeend", " " + opt);
+        optionsDiv.appendChild(label);
+      });
+      container.appendChild(optionsDiv);
+      quizDiv.appendChild(container);
+    }
+
+    function checkAnswer() {
+      const radios = document.getElementsByName("option");
+      let selected = -1;
+      for (let radio of radios) {
+        if (radio.checked) {
+          selected = parseInt(radio.value);
+          break;
         }
-        
-        function loadQuestion(index) {
-            lastQuestionIndex[quizMode] = index;
-            let quizDiv = document.getElementById("quiz");
-            quizDiv.innerHTML = "";
-            document.getElementById("feedback").textContent = "";
-            
-            if (index >= quizQuestions.length) {
-                quizDiv.innerHTML = "<h2>Quiz Completed!</h2>";
-                return;
-            }
-            
-            let qObj = quizQuestions[index];
-            let container = document.createElement("div");
-            container.className = "question-container";
-            
-            let qText = document.createElement("p");
-            qText.textContent = qObj.question;
-            container.appendChild(qText);
-            
-            let optionsDiv = document.createElement("div");
-            optionsDiv.className = "options";
-            qObj.options.forEach((opt, idx) => {
-                let label = document.createElement("label");
-                let radio = document.createElement("input");
-                radio.type = "radio";
-                radio.name = "option";
-                radio.value = idx;
-                label.appendChild(radio);
-                label.insertAdjacentText("beforeend", " " + opt);
-                optionsDiv.appendChild(label);
-            });
-            
-            container.appendChild(optionsDiv);
-            quizDiv.appendChild(container);
+      }
+      if (selected === -1) {
+        alert("Please select an answer.");
+        return;
+      }
+      const qObj = quizQuestions[currentIndex];
+      const feedbackDiv = document.getElementById('feedback');
+      if (selected === qObj.correctIndex) {
+        feedbackDiv.textContent = "Correct!";
+        correctCount++;
+      } else {
+        feedbackDiv.textContent =
+          "Incorrect! The correct answer is: " + qObj.options[qObj.correctIndex];
+        if (!wrongQuestions.some(q => q.question === qObj.question)) {
+          wrongQuestions.push(qObj);
         }
-        
-        function switchMode() {
-            let lastIndex = lastQuestionIndex[quizMode];
-            quizMode = quizMode === "all" ? "wrong" : "all";
-            quizQuestions = quizMode === "all" ? allQuestions.slice() : wrongQuestions.slice();
-            lastQuestionIndex[quizMode] = lastIndex < quizQuestions.length ? lastIndex : 0;
-            updateJumpList();
-            loadQuestion(lastQuestionIndex[quizMode]);
+      }
+      saveProgress();
+      document.getElementById('submitBtn').style.display = "none";
+      document.getElementById('nextBtn').style.display = "inline-block";
+      updateScoreboard();
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      saveProgress();
+      document.getElementById('submitBtn').style.display = "inline-block";
+      document.getElementById('nextBtn').style.display = "none";
+      loadQuestion();
+      updateScoreboard();
+    }
+
+    function switchMode() {
+      if (quizMode === "all") {
+        // Switching from All to Wrong mode.
+        if (wrongQuestions.length === 0) {
+          alert("No wrong answers to retry!");
+          return;
         }
-        
-        document.getElementById("jumpToQuestion").addEventListener("change", function () {
-            loadQuestion(parseInt(this.value));
-        });
-        
-        document.getElementById("modeBtn").addEventListener("click", switchMode);
-        
-        window.onload = function () {
-            updateJumpList();
-            loadQuestion(lastQuestionIndex[quizMode]);
+        // Backup current All mode state
+        backupAllState = {
+          currentIndex: currentIndex,
+          correctCount: correctCount
         };
-    </script>
+        quizMode = "wrong";
+        quizQuestions = wrongQuestions.slice();
+        currentIndex = 0;
+        correctCount = 0;
+        localStorage.removeItem('fuelCombCurrentIndex');
+        localStorage.removeItem('fuelCombCorrectCount');
+      } else {
+        // Switching from Wrong mode back to All mode.
+        quizMode = "all";
+        quizQuestions = allQuestions.slice();
+        if (backupAllState !== null) {
+          currentIndex = backupAllState.currentIndex;
+          correctCount = backupAllState.correctCount;
+          backupAllState = null;
+        } else {
+          currentIndex = 0;
+          correctCount = 0;
+        }
+      }
+      document.getElementById('modeBtn').textContent =
+        quizMode === "all" ? "Retry Wrong Answers" : "Back to All Questions";
+      updateScoreboard();
+      loadQuestion();
+    }
+
+    // New function to jump to a specified question
+    function jumpToQuestion() {
+      const jumpInput = document.getElementById('jumpInput');
+      let questionNumber = parseInt(jumpInput.value);
+      if (
+        isNaN(questionNumber) ||
+        questionNumber < 1 ||
+        questionNumber > quizQuestions.length
+      ) {
+        alert("Please enter a valid question number between 1 and " + quizQuestions.length);
+        return;
+      }
+      currentIndex = questionNumber - 1;
+      saveProgress();
+      loadQuestion();
+      updateScoreboard();
+    }
+
+    // Update the max attribute for the jump input dynamically
+    function updateJumpInput() {
+      const jumpInput = document.getElementById('jumpInput');
+      if (jumpInput) {
+        jumpInput.max = quizQuestions.length;
+      }
+    }
+
+    document.getElementById('submitBtn').addEventListener('click', checkAnswer);
+    document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    document.getElementById('modeBtn').addEventListener('click', switchMode);
+    document.getElementById('jumpBtn').addEventListener('click', jumpToQuestion);
+
+    window.onload = function () {
+      updateScoreboard();
+      loadQuestion();
+    };
+  </script>
 </body>
 
 </html>
-
