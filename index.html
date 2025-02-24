@@ -15,13 +15,13 @@
             max-width: 900px;
             color: #333;
         }
-
+        
         h1 {
             text-align: center;
             color: #1976d2;
             font-size: 1.8em;
         }
-
+        
         .question-container {
             background: #fff;
             border: 1px solid #e0e6ed;
@@ -30,12 +30,7 @@
             padding: 15px;
             margin-bottom: 15px;
         }
-
-        .question-container p {
-            font-size: 1em;
-            margin-bottom: 10px;
-        }
-
+        
         .options label {
             background: #e1f5fe;
             border-radius: 5px;
@@ -46,27 +41,11 @@
             transition: background 0.3s ease;
             font-size: 0.95em;
         }
-
+        
         .options label:hover {
             background: #b3e5fc;
         }
-
-        #feedback {
-            font-weight: 700;
-            margin: 10px 0;
-            font-size: 1.1em;
-        }
-
-        #scoreboard {
-            margin-top: 15px;
-            padding: 10px;
-            border-top: 2px solid #1976d2;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-size: 0.9em;
-        }
-
+        
         button {
             background-color: #1976d2;
             border: none;
@@ -83,23 +62,35 @@
             margin-left: auto;
             margin-right: auto;
         }
-
+        
         button:hover {
             background-color: #0d47a1;
         }
-
+        
         #modeBtn {
             background-color: #388e3c;
         }
-
+        
         #modeBtn:hover {
             background-color: #1b5e20;
+        }
+        
+        select {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            margin: 10px auto;
+            display: block;
+            border: 1px solid #1976d2;
+            border-radius: 5px;
+            font-size: 1em;
         }
     </style>
 </head>
 
 <body>
     <h1>Fuel & Combustion 200 OBJ Questions</h1>
+    <select id="jumpToQuestion"></select>
     <div id="quiz"></div>
     <div id="feedback"></div>
     <div>
@@ -107,16 +98,9 @@
         <button id="nextBtn" style="display:none;">Next Question</button>
         <button id="modeBtn">Retry Wrong Answers</button>
     </div>
-    <div id="scoreboard">
-        <p>Question: <span id="currentIndex">1</span> / <span id="totalQuestions">200</span></p>
-        <p>Correct: <span id="correctCount">0</span></p>
-        <p>Wrong: <span id="wrongCount">0</span></p>
-        <p>Mode: <span id="modeDisplay">All Questions</span></p>
-    </div>
-
+    
     <script>
-        // All 200 questions embedded as a JSON array
-                const allQuestions = [
+        const allQuestions = [
                     { "question": "1. What is a fuel?", "options": ["A substance that contains chemical energy", "A catalyst", "A refrigerant", "A solvent"], "correctIndex": 0 },
                     { "question": "2. According to the lecture, which element is the main constituent in most fuels?", "options": ["Oxygen", "Nitrogen", "Carbon", "Hydrogen"], "correctIndex": 2 },
                     { "question": "3. Which of the following is an example of a fuel mentioned in the lecture?", "options": ["Charcoal", "Natural Gas", "Diesel Fuel", "All of the above"], "correctIndex": 3 },
@@ -318,52 +302,48 @@
                     { "question": "199. Which factor is most critical in determining the storage requirements for liquid fuels?", "options": ["Calorific value", "Cost of storage tanks", "Volatility", "Viscosity"], "correctIndex": 2 },
                     { "question": "200. The process of “cracking” in petroleum refining involves:", "options": ["Breaking large hydrocarbon molecules into smaller ones", "Combining small molecules into larger ones", "Removing impurities", "Increasing water content"], "correctIndex": 0 }
                 ];
-
-        // Global variables for quiz mode ("all" or "wrong")
         let quizMode = "all";
-        let quizQuestions = allQuestions.slice(); // default: all questions
-        let currentIndex = parseInt(localStorage.getItem('currentIndex')) || 0;
-        let correctCount = parseInt(localStorage.getItem('correctCount')) || 0;
-        // Store wrong questions with full data (only add once per question)
-        let wrongQuestions = JSON.parse(localStorage.getItem('wrongQuestions')) || [];
-
-        function updateScoreboard() {
-            // Display current question as currentIndex+1 to start from 1/200
-            document.getElementById('currentIndex').textContent = currentIndex + 1;
-            document.getElementById('totalQuestions').textContent = quizQuestions.length;
-            document.getElementById('correctCount').textContent = correctCount;
-            document.getElementById('wrongCount').textContent = wrongQuestions.length;
-            document.getElementById('modeDisplay').textContent = quizMode === "all" ? "All Questions" : "Wrong Answers Only";
+        let quizQuestions = allQuestions.slice();
+        let lastQuestionIndex = { all: 0, wrong: 0 };
+        let correctCount = 0;
+        let wrongQuestions = [];
+        
+        function updateJumpList() {
+            let jumpSelect = document.getElementById("jumpToQuestion");
+            jumpSelect.innerHTML = "";
+            quizQuestions.forEach((q, index) => {
+                let option = document.createElement("option");
+                option.value = index;
+                option.textContent = `Question ${index + 1}`;
+                jumpSelect.appendChild(option);
+            });
+            jumpSelect.value = lastQuestionIndex[quizMode];
         }
-
-        function saveProgress() {
-            localStorage.setItem('currentIndex', currentIndex);
-            localStorage.setItem('correctCount', correctCount);
-            localStorage.setItem('wrongQuestions', JSON.stringify(wrongQuestions));
-        }
-
-        function loadQuestion() {
-            const quizDiv = document.getElementById('quiz');
+        
+        function loadQuestion(index) {
+            lastQuestionIndex[quizMode] = index;
+            let quizDiv = document.getElementById("quiz");
             quizDiv.innerHTML = "";
-            document.getElementById('feedback').textContent = "";
-            if (currentIndex >= quizQuestions.length) {
-                quizDiv.innerHTML = "<h2>Quiz Completed!</h2><p>Your score: " + correctCount + " / " + quizQuestions.length + "</p>";
-                document.getElementById('submitBtn').style.display = "none";
-                document.getElementById('nextBtn').style.display = "none";
+            document.getElementById("feedback").textContent = "";
+            
+            if (index >= quizQuestions.length) {
+                quizDiv.innerHTML = "<h2>Quiz Completed!</h2>";
                 return;
             }
-            const qObj = quizQuestions[currentIndex];
-            const container = document.createElement('div');
+            
+            let qObj = quizQuestions[index];
+            let container = document.createElement("div");
             container.className = "question-container";
-            const qText = document.createElement('p');
+            
+            let qText = document.createElement("p");
             qText.textContent = qObj.question;
             container.appendChild(qText);
-
-            const optionsDiv = document.createElement('div');
+            
+            let optionsDiv = document.createElement("div");
             optionsDiv.className = "options";
             qObj.options.forEach((opt, idx) => {
-                const label = document.createElement('label');
-                const radio = document.createElement('input');
+                let label = document.createElement("label");
+                let radio = document.createElement("input");
                 radio.type = "radio";
                 radio.name = "option";
                 radio.value = idx;
@@ -371,81 +351,32 @@
                 label.insertAdjacentText("beforeend", " " + opt);
                 optionsDiv.appendChild(label);
             });
+            
             container.appendChild(optionsDiv);
             quizDiv.appendChild(container);
         }
-
-        function checkAnswer() {
-            const radios = document.getElementsByName("option");
-            let selected = -1;
-            for (let radio of radios) {
-                if (radio.checked) {
-                    selected = parseInt(radio.value);
-                    break;
-                }
-            }
-            if (selected === -1) {
-                alert("Please select an answer.");
-                return;
-            }
-            const qObj = quizQuestions[currentIndex];
-            const feedbackDiv = document.getElementById('feedback');
-            if (selected === qObj.correctIndex) {
-                feedbackDiv.textContent = "Correct!";
-                correctCount++;
-            } else {
-                feedbackDiv.textContent = "Incorrect! The correct answer is: " + qObj.options[qObj.correctIndex];
-                if (!wrongQuestions.some(q => q.question === qObj.question)) {
-                    wrongQuestions.push(qObj);
-                }
-            }
-            saveProgress();
-            document.getElementById('submitBtn').style.display = "none";
-            document.getElementById('nextBtn').style.display = "inline-block";
-            updateScoreboard();
-        }
-
-        function nextQuestion() {
-            currentIndex++;
-            saveProgress();
-            document.getElementById('submitBtn').style.display = "inline-block";
-            document.getElementById('nextBtn').style.display = "none";
-            loadQuestion();
-            updateScoreboard();
-        }
-
+        
         function switchMode() {
-            if (quizMode === "all") {
-                if (wrongQuestions.length === 0) {
-                    alert("No wrong answers to retry!");
-                    return;
-                }
-                quizMode = "wrong";
-                quizQuestions = wrongQuestions.slice();
-                currentIndex = 0;
-                correctCount = 0;
-                localStorage.removeItem('currentIndex');
-                localStorage.removeItem('correctCount');
-            } else {
-                quizMode = "all";
-                quizQuestions = allQuestions.slice();
-                currentIndex = 0;
-                correctCount = 0;
-            }
-            document.getElementById('modeBtn').textContent = quizMode === "all" ? "Retry Wrong Answers" : "Back to All Questions";
-            updateScoreboard();
-            loadQuestion();
+            let lastIndex = lastQuestionIndex[quizMode];
+            quizMode = quizMode === "all" ? "wrong" : "all";
+            quizQuestions = quizMode === "all" ? allQuestions.slice() : wrongQuestions.slice();
+            lastQuestionIndex[quizMode] = lastIndex < quizQuestions.length ? lastIndex : 0;
+            updateJumpList();
+            loadQuestion(lastQuestionIndex[quizMode]);
         }
-
-        document.getElementById('submitBtn').addEventListener('click', checkAnswer);
-        document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-        document.getElementById('modeBtn').addEventListener('click', switchMode);
-
+        
+        document.getElementById("jumpToQuestion").addEventListener("change", function () {
+            loadQuestion(parseInt(this.value));
+        });
+        
+        document.getElementById("modeBtn").addEventListener("click", switchMode);
+        
         window.onload = function () {
-            updateScoreboard();
-            loadQuestion();
+            updateJumpList();
+            loadQuestion(lastQuestionIndex[quizMode]);
         };
     </script>
 </body>
 
 </html>
+
